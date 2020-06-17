@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.beans.Computer;
+import com.excilys.formation.java.cdb.mapper.CompanyMapper;
+import com.excilys.formation.java.cdb.mapper.ComputerMapper;
 
 public class CompanyDaoImpl implements CompanyDao {
 
@@ -34,13 +36,15 @@ public class CompanyDaoImpl implements CompanyDao {
 
             while (resultat.next()) {
 
-                Company company = new Company();
+//                Company company = new Company();
+//                
+//                int id = resultat.getInt("id");
+//                String name = resultat.getString("name");
+//                     
+//				company.setId(id );
+//				company.setName(name);
                 
-                int id = resultat.getInt("id");
-                String name = resultat.getString("name");
-                     
-				company.setId(id );
-				company.setName(name);
+                Company company = CompanyMapper.getCompany(resultat);
 
                 companies.add(company);
             }

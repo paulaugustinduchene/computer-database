@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.excilys.formation.java.cdb.beans.Computer;
+import com.excilys.formation.java.cdb.mapper.ComputerMapper;
 
 public class ComputerDaoImpl implements ComputerDao{
 	
@@ -32,19 +33,21 @@ public class ComputerDaoImpl implements ComputerDao{
 
 	            while (resultat.next()) {
 
-	                Computer computer = new Computer();
-	                
-	                int id = resultat.getInt("id");
-	                String name = resultat.getString("name");
-	                Date introduced = resultat.getDate("introduced");
-	                Date discontinuted = resultat.getDate("discontinued");
-	                int company_id = resultat.getInt("company_id");
-	                
-					computer.setId(id );
-					computer.setName(name);
-					computer.setIntroduced(introduced);
-					computer.setDiscontinuted(discontinuted);
-					computer.setCompany_id(company_id);
+//	                Computer computer = new Computer();
+//	                
+//	                int id = resultat.getInt("id");
+//	                String name = resultat.getString("name");
+//	                Date introduced = resultat.getDate("introduced");
+//	                Date discontinuted = resultat.getDate("discontinued");
+//	                int company_id = resultat.getInt("company_id");
+//	                
+//					computer.setId(id );
+//					computer.setName(name);
+//					computer.setIntroduced(introduced);
+//					computer.setDiscontinuted(discontinuted);
+//					computer.setCompany_id(company_id);
+					
+					Computer computer = ComputerMapper.getComputer(resultat);
 
 	                computers.add(computer);
 	            }

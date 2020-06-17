@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.beans.Computer;
 
-public class CompnyMapper {
+public class CompanyMapper {
 
 public static Company getCompany(ResultSet results) throws SQLException {
 		

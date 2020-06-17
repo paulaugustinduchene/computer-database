@@ -31,7 +31,6 @@ public class TestDao {
 		
 		System.out.println("\n Nouvelle liste \n");
 		
-	
 		
 		computerDao.update(computer2);
 		
