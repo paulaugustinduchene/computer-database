@@ -1,4 +1,4 @@
-package com.exilys.formation.java.cdb.test;
+package com.excilys.formation.java.cdb.test;
 
 import java.util.List;
 
