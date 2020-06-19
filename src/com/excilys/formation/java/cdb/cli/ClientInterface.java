@@ -34,8 +34,18 @@ public class ClientInterface {
 		case "companies":
 			CompanyServices.afficherliste();
 			break;
+		case "show":
+			ComputerServices.showDetails();
+		case "create":
+			ComputerServices.create(); 
+		case "update":
+			ComputerServices.delete();
+		case "delete":
+			ComputerServices.update();
 		}
 
 	}
+	
+	
 
 }
