@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DaoConnexion{
 
-		private static final String url = "jdbc:mysql://localhost:3306/computer-database-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		private static final String url = "jdbc:mysql://localhost:3308/computer-database-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		private static final String username = "admincdb";
 		private static final String password = "qwerty1234";
 		

@@ -16,30 +16,27 @@ public class ComputerServices {
 		
 	}
 
-	public static void afficherliste() {
-		
+	public static List<Computer> afficherliste() {
 		List<Computer> computers = daoconnexion.getComputerDao().list();
 		System.out.println(computers);
+		return computers;
 	}
 
-	public static void showDetails() {
-		
-		
+	public static Computer showDetails(int id) {
+		Computer computer = daoconnexion.getComputerDao().list().get(id);
+		return computer;
 	}
 
-	public static void create() {
-		// TODO Auto-generated method stub
-		
+	public static void create(Computer computer) {
+		daoconnexion.getComputerDao().add(computer);
 	}
 
-	public static void delete() {
-		// TODO Auto-generated method stub
-		
+	public static void delete(Computer computer) {
+		daoconnexion.getComputerDao().delete(computer);		
 	}
 
-	public static void update() {
-		// TODO Auto-generated method stub
-		
+	public static void update(Computer computer) {
+		daoconnexion.getComputerDao().update(computer);		
 	}
 
 }

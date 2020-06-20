@@ -8,14 +8,18 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
 public class ClientInterface {
 
 	private static ComputerServices comServ = new ComputerServices();
-	private static Scanner scan = new Scanner(System.in); 
+	private static Scanner scan = new Scanner(System.in);
 
 	public void Appinit() {
+		
+		boolean running = true; 
 
 		System.out.println("Computer Database CommandLine Acess \n " + "hit 'help' for help \n");
 
 		// add here scaner or then args
-
+ while(running == true) {
+	 
+	 	System.out.print("computer_db >");
 		String choice = scan.nextLine();
 		switch (choice) {
 		case "help":
@@ -30,22 +34,39 @@ public class ClientInterface {
 			break;
 		case "computers":
 			ComputerServices.afficherliste();
+			//System.out.println("la comande etait : " + choice);
 			break;
 		case "companies":
-			CompanyServices.afficherliste();
+			//CompanyServices.afficherliste();
+			System.out.println("la comande etait : " + choice);
 			break;
 		case "show":
-			ComputerServices.showDetails();
+			//ComputerServices.showDetails(6);
+			System.out.println("la comande etait : " + choice);
+			break;
 		case "create":
-			ComputerServices.create(); 
+			//ComputerServices.create(); 
+			System.out.println("la comande etait : " + choice);
+			break;
 		case "update":
-			ComputerServices.delete();
+			//ComputerServices.delete();
+			System.out.println("la comande etait : " + choice);
+			break;
 		case "delete":
-			ComputerServices.update();
+			//ComputerServices.update();
+			System.out.println("la comande etait : " + choice);
+			break;
+		case "exit":
+			running = false;
+			System.out.println("GoodBye ! ");
+			break;
 		}
 
 	}
 	
-	
+	}
 
+	
+	private void update() { 
+	}
 }
