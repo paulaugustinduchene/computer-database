@@ -2,6 +2,7 @@ package com.excilys.formation.java.cdb.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 
@@ -11,8 +12,8 @@ public class ComputerMapper {
 		
 		return new Computer(results.getInt("id"),
 				results.getString("name"), 
-				results.getDate("introduced"),
-				results.getDate("discontinued"),
+				DateMapper.sqlToLocalDate(results.getDate("introduced")),
+				DateMapper.sqlToLocalDate(results.getDate("discontinued")),
 				results.getInt("company_id"));
 	}
 

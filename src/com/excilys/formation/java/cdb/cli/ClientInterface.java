@@ -1,7 +1,8 @@
 package com.excilys.formation.java.cdb.cli;
 
-import java.sql.Date;
+
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,12 +10,11 @@ import java.util.Scanner;
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dao.DaoConnexion;
 import com.excilys.formation.java.cdb.mapper.ComputerMapper;
+import com.excilys.formation.java.cdb.mapper.DateMapper;
 import com.excilys.formation.java.cdb.services.CompanyServices;
 import com.excilys.formation.java.cdb.services.ComputerServices;
 
 public class ClientInterface {
-
-	private static ComputerServices comServ = new ComputerServices();
 
 	public void Appinit() {
 
@@ -96,11 +96,11 @@ System.out.println("   _____                            _              _____    
 		}
 
 		Computer computer = new Computer();
-		int cId;
 		computer.setName(cmd.get(0));
-		computer.setIntroduced(Date.valueOf(cmd.get(1)));
-		computer.setDiscontinuted(Date.valueOf(cmd.get(2)));
+		computer.setIntroduced(DateMapper.stringToLocalDate(cmd.get(1)));
+		computer.setDiscontinuted(DateMapper.stringToLocalDate(cmd.get(2)));
 		computer.setCompany_id(Integer.parseInt(cmd.get(3)));
+		computer.setId(Integer.parseInt(cmd.get(4)));
 
 
 		return computer;
@@ -112,19 +112,19 @@ System.out.println("   _____                            _              _____    
 				+ "follow this patern : name * date introdiuce * date discontinued * company id"
 				+ "dates should be yyyy-mm-dd");
 		Computer computer = scanComputer();
-		comServ.create(computer);
+		ComputerServices.create(computer);
 		System.out.println("a new computer has been added to the database ");
 	}
 
 	private void update() {
 		Computer computer = scanComputer();
-		comServ.update(computer);
+		ComputerServices.update(computer);
 		System.out.println("computer has been update in the database ");
 	}
 
 	private void delete() {
 		Computer computer = scanComputer();
-		comServ.delete(computer);
+		ComputerServices.delete(computer);
 		System.out.println("computer has been erased from the database ");
 	}
 
@@ -133,7 +133,7 @@ System.out.println("   _____                            _              _____    
 				+ "computer_db $id >");
 		Scanner scan = new Scanner(System.in);
 		int id = scan.nextInt();
-		System.out.println(comServ.showDetails(id - 1).toString());
+		System.out.println(ComputerServices.showDetails(id - 1).toString());
 	}
 
 	
@@ -147,7 +147,7 @@ System.out.println("   _____                            _              _____    
 		Scanner scan = new Scanner(System.in);
 		int low = 1;
 		int high = 10;
-		System.out.println(comServ.afficherPage(low, high).toString());
+		System.out.println(ComputerServices.afficherPage(low, high).toString());
 		System.out.println("enter 'n' for next 'p' for previous and 'q' to exit list");
 		while (!scan.next().equals("q")) {
 
@@ -155,12 +155,12 @@ System.out.println("   _____                            _              _____    
 			case "n":
 				low += 10;
 				high += 10;
-				System.out.println(comServ.afficherPage(low, high).toString());
+				System.out.println(ComputerServices.afficherPage(low, high).toString());
 				break;
 			case "p":
 				low += -10;
 				high += -10;
-				System.out.println(comServ.afficherPage(low, high).toString());
+				System.out.println(ComputerServices.afficherPage(low, high).toString());
 				break;
 			default:
 				System.out.println("ceci n'est pas reconu");
