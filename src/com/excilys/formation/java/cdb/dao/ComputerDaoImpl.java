@@ -31,22 +31,8 @@ public class ComputerDaoImpl implements ComputerDao{
 	            statement = connexion.createStatement();
 	            resultat = statement.executeQuery("SELECT * FROM computer;");
 
-	            while (resultat.next()) {
-
-//	                Computer computer = new Computer();
-//	                
-//	                int id = resultat.getInt("id");
-//	                String name = resultat.getString("name");
-//	                Date introduced = resultat.getDate("introduced");
-//	                Date discontinuted = resultat.getDate("discontinued");
-//	                int company_id = resultat.getInt("company_id");
-//	                
-//					computer.setId(id );
-//					computer.setName(name);
-//					computer.setIntroduced(introduced);
-//					computer.setDiscontinuted(discontinuted);
-//					computer.setCompany_id(company_id);
-					
+	            //while (resultat.next()) {
+	            while (resultat.next()) {	
 					Computer computer = ComputerMapper.getComputer(resultat);
 
 	                computers.add(computer);
@@ -57,12 +43,32 @@ public class ComputerDaoImpl implements ComputerDao{
 	        return computers;
 	    
 	}
+	
+	public List<Computer> listpage(int low, int high) {
+		 List<Computer> computers = new ArrayList<Computer>();
+	        Connection connexion = null;
+	        PreparedStatement prepareStatement = null;
+	        ResultSet resultat = null;
 
-	@Override
-	public void create(Computer computer) {
-		// TODO Auto-generated method stub
-		
+	        try {
+	            connexion = daoConnexion.getConnexion();
+	            prepareStatement = connexion.prepareStatement("SELECT * FROM computer WHERE  id >= ? AND  id <= ? ;");
+	            prepareStatement.setInt(1, low);
+	            prepareStatement.setInt(2, high);
+	            resultat = prepareStatement.executeQuery();
+	            //while (resultat.next()) {
+	            while (resultat.next()) {	
+					Computer comp = ComputerMapper.getComputer(resultat);
+
+	                computers.add(comp);
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return computers;
+	    
 	}
+
 
 	@Override
 	public void add(Computer computer) {
@@ -72,12 +78,11 @@ public class ComputerDaoImpl implements ComputerDao{
 
         try {
             connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("INSERT INTO computer(id, name, introduced, discontinued, company_id) VALUES(?, ?,? , ? , ?);");
-            preparedStatement.setInt(1, computer.getId());
-            preparedStatement.setString(2, computer.getName());
-            preparedStatement.setDate(3, (java.sql.Date) computer.getIntroduced());
-            preparedStatement.setDate(4, (java.sql.Date) computer.getDiscontinuted());
-            preparedStatement.setInt(5, computer.getCompany_id());
+            preparedStatement = connexion.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( ?,? , ? , ?);");
+            preparedStatement.setString(1, computer.getName());
+            preparedStatement.setDate(2, (java.sql.Date) computer.getIntroduced());
+            preparedStatement.setDate(3, (java.sql.Date) computer.getDiscontinuted());
+            preparedStatement.setInt(4, computer.getCompany_id());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -123,6 +128,8 @@ public class ComputerDaoImpl implements ComputerDao{
         }
 		
 	}
+
+
 		
 
 }
