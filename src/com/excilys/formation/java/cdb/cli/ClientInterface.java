@@ -1,6 +1,5 @@
 package com.excilys.formation.java.cdb.cli;
 
-
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,21 +20,18 @@ public class ClientInterface {
 		Scanner scan = new Scanner(System.in);
 
 		boolean running = true;
-		
-		
-	
-System.out.println("   _____                            _              _____        _        ____                 \n" + 
-		"  / ____|                          | |            |  __ \\      | |      |  _ \\                \n" + 
-		" | |     ___  _ __ ___  _ __  _   _| |_ ___ _ __  | |  | | __ _| |_ __ _| |_) | __ _ ___  ___ \n" + 
-		" | |    / _ \\| '_ ` _ \\| '_ \\| | | | __/ _ \\ '__| | |  | |/ _` | __/ _` |  _ < / _` / __|/ _ \\\n" + 
-		" | |___| (_) | | | | | | |_) | |_| | ||  __/ |    | |__| | (_| | || (_| | |_) | (_| \\__ \\  __/\n" + 
-		"  \\_____\\___/|_| |_| |_| .__/ \\__,_|\\__\\___|_|    |_____/ \\__,_|\\__\\__,_|____/ \\__,_|___/\\___|\n" + 
-		"                       | |                                                                    \n" + 
-		"                       |_|                                                                    \n" + 
-		"");
-		System.out.println("Computer Database CommandLine Acess \n " 
-		+ "hit 'help' for help \n");
-		
+
+		System.out.println(
+				"   _____                            _              _____        _        ____                 \n"
+						+ "  / ____|                          | |            |  __ \\      | |      |  _ \\                \n"
+						+ " | |     ___  _ __ ___  _ __  _   _| |_ ___ _ __  | |  | | __ _| |_ __ _| |_) | __ _ ___  ___ \n"
+						+ " | |    / _ \\| '_ ` _ \\| '_ \\| | | | __/ _ \\ '__| | |  | |/ _` | __/ _` |  _ < / _` / __|/ _ \\\n"
+						+ " | |___| (_) | | | | | | |_) | |_| | ||  __/ |    | |__| | (_| | || (_| | |_) | (_| \\__ \\  __/\n"
+						+ "  \\_____\\___/|_| |_| |_| .__/ \\__,_|\\__\\___|_|    |_____/ \\__,_|\\__\\__,_|____/ \\__,_|___/\\___|\n"
+						+ "                       | |                                                                    \n"
+						+ "                       |_|                                                                    \n"
+						+ "");
+		System.out.println("Computer Database CommandLine Acess \n " + "hit 'help' for help \n");
 
 		// add here scaner or then args
 		while (running == true) {
@@ -44,12 +40,9 @@ System.out.println("   _____                            _              _____    
 			String choice = scan.nextLine();
 			switch (choice) {
 			case "help":
-				System.out.println("Help ! \n" + "commands available  : \n" 
-						+ "computers > Display computer list \n"
-						+ "companies > Display company list \n" 
-						+ "create > create a computer \n"
-						+ "delete > delete a computer \n" 
-						+ "update > update a computer\n"
+				System.out.println("Help ! \n" + "commands available  : \n" + "computers > Display computer list \n"
+						+ "companies > Display company list \n" + "create > create a computer \n"
+						+ "delete > delete a computer \n" + "update > update a computer\n"
 						+ "show > show details of a computer \n");
 				break;
 			case "computers":
@@ -77,7 +70,7 @@ System.out.println("   _____                            _              _____    
 
 		}
 
-	//	scan.close();
+		// scan.close();
 
 	}
 
@@ -96,20 +89,41 @@ System.out.println("   _____                            _              _____    
 		}
 
 		Computer computer = new Computer();
-		computer.setName(cmd.get(0));
-		computer.setIntroduced(DateMapper.stringToLocalDate(cmd.get(1)));
-		computer.setDiscontinuted(DateMapper.stringToLocalDate(cmd.get(2)));
-		computer.setCompany_id(Integer.parseInt(cmd.get(3)));
+
+		try {
+			computer.setName(cmd.get(0));
+		} catch (Exception e) {
+			System.out.println("L'identifiant est invalide");
+		}
+
+		try {
+			computer.setIntroduced(DateMapper.stringToLocalDate(cmd.get(1)));
+		} catch (Exception e) {
+			System.out.println("Invalid Date Format");
+		}
+
+		try {
+			computer.setDiscontinuted(DateMapper.stringToLocalDate(cmd.get(2)));
+		} catch (Exception e) {
+			System.out.println("Invalid Date Format");
+		}
+		try {
+			computer.setCompany_id(Integer.parseInt(cmd.get(3)));
+		} catch (Exception e) {
+			System.out.println("Invalid company Id");
+		}
+		try {
 		computer.setId(Integer.parseInt(cmd.get(4)));
-
-
+		} catch (Exception e){
+			System.out.println("Invalid computer Id");
+		}
 		return computer;
 
 	}
 
 	private void create() {
 		System.out.println("use £ as delimitter between entries"
-				+ "follow this patern : name * date introdiuce * date discontinued * company id"
+				+ "follow this patern : 'name'  'date introdiuce'  'date discontinued'  'company id' 'id'"
 				+ "dates should be yyyy-mm-dd");
 		Computer computer = scanComputer();
 		ComputerServices.create(computer);
@@ -129,20 +143,17 @@ System.out.println("   _____                            _              _____    
 	}
 
 	private void showInformations() {
-		System.out.print("Enter computer id to see informations \n"
-				+ "computer_db $id >");
+		System.out.print("Enter computer id to see informations \n" + "computer_db $id >");
 		Scanner scan = new Scanner(System.in);
 		int id = scan.nextInt();
 		System.out.println(ComputerServices.showDetails(id - 1).toString());
 	}
 
-	
-	
 	/**
 	 * 
-	 * Affiche la liste page par page les commandes  
+	 * Affiche la liste page par page les commandes
 	 * 
-	 * */
+	 */
 	private void afficherPage() {
 		Scanner scan = new Scanner(System.in);
 		int low = 1;
