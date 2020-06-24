@@ -36,14 +36,6 @@ public class CompanyDaoImpl implements CompanyDao {
             resultat = statement.executeQuery("SELECT * FROM company;");
 
             while (resultat.next()) {
-
-//                Company company = new Company();
-//                
-//                int id = resultat.getInt("id");
-//                String name = resultat.getString("name");
-//                     
-//				company.setId(id );
-//				company.setName(name);
                 
                 Company company = CompanyMapper.getCompany(resultat);
 

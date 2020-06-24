@@ -5,7 +5,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.formation.java.cdb.cli.ClientInterface;
 
 public class DaoConnexion{
 
@@ -13,16 +17,18 @@ public class DaoConnexion{
 		private static final String username = "admincdb";
 		private static final String password = "qwerty1234";
 		
+		private static Logger logger = LoggerFactory.getLogger(ClientInterface.class);
+		
 		public DaoConnexion() {
 
 		}
 
 		public static DaoConnexion getInstance() {
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 		
 			} catch (ClassNotFoundException e) {
-				
+				logger.error("failed to contact Driver for sql databse connection");
 			}
 			
 			DaoConnexion instance = new DaoConnexion();

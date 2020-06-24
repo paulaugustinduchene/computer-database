@@ -22,7 +22,7 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
 
 public class ClientInterface {
 	
-	private Logger logger = LoggerFactory.getLogger(CompanyDaoImpl.class);
+	private Logger logger = LoggerFactory.getLogger(ClientInterface.class);
 
 	public void Appinit() {
 
@@ -31,7 +31,7 @@ public class ClientInterface {
 		
 		
 		boolean running = true;
-
+		
 		System.out.println(
 				"   _____                            _              _____        _        ____                 \n"
 						+ "  / ____|                          | |            |  __ \\      | |      |  _ \\                \n"
@@ -118,9 +118,13 @@ public class ClientInterface {
 		System.out.println("use £ as delimitter between entries"
 				+ "follow this patern : 'name'  'date introdiuce'  'date discontinued'  'company id' 'id'"
 				+ "dates should be yyyy-mm-dd");
+		try {
 		Computer computer = scanComputer();
 		ComputerServices.create(computer);
 		System.out.println("a new computer has been added to the database ");
+		} catch(Exception e) {
+			logger.error("Computer can't be created ! ");
+		}
 	}
 
 	private void update() {
@@ -153,8 +157,14 @@ public class ClientInterface {
 		int high = 10;
 		System.out.println(ComputerServices.afficherPage(low, high).toString());
 		System.out.println("enter 'n' for next 'p' for previous and 'q' to exit list");
+		
 		while (!scan.next().equals("q")) {
 
+			if(low <1 && high < 10) {
+				low = 1; 
+				high = 10;
+			}
+			
 			switch (scan.next()) {
 			case "n":
 				low += 10;
@@ -164,6 +174,10 @@ public class ClientInterface {
 			case "p":
 				low += -10;
 				high += -10;
+				if(low <1 && high < 10) {
+					low = 1; 
+					high = 10;
+				}
 				System.out.println(ComputerServices.afficherPage(low, high).toString());
 				break;
 			default:
