@@ -19,5 +19,8 @@ private static DaoConnexion daoconnexion = new DaoConnexion();
 		System.out.println(companies);
 	}
 	
+	public static void afficherCompany() {
+		daoconnexion.getCompanyDao().getNameById(5);
+	}
 
 }

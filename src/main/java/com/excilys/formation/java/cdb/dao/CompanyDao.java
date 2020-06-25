@@ -7,5 +7,5 @@ import com.excilys.formation.java.cdb.beans.Company;
 public interface CompanyDao {
 
 	public List<Company> list();
-	
+	public Company getNameById(int id);
 }

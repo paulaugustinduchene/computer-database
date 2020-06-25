@@ -10,15 +10,12 @@ import com.excilys.formation.java.cdb.dao.DaoConnexion;
 
 public class ComputerDaoImplTest {
 	
-
-
 	@Test
 	public void testListPage() {
 		
 		DaoConnexion daoconnexion = DaoConnexion.getInstance();
 		int listsize =10;
-		assertEquals(listsize,daoconnexion.getComputerDao().listpage(1, 10).size());
-		
+		assertEquals("list size ins't the one expected",listsize,daoconnexion.getComputerDao().listpage(1, 10).size());
 	}
 
 }

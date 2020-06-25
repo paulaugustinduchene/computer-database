@@ -2,6 +2,7 @@ package com.excilys.formation.java.cdb.dao;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -45,6 +46,27 @@ public class CompanyDaoImpl implements CompanyDao {
             e.printStackTrace();
         }
         return companies;
+	}
+	
+	public Company getNameById(int id) {
+	Company company = new Company();
+        Connection connexion = null;
+        PreparedStatement prepareStatement = null;
+        ResultSet resultat = null;
+
+        try {
+            connexion = daoConnexion.getConnexion();
+            prepareStatement = connexion.prepareStatement("SELECT id, name FROM company WHERE  id = ? ;");
+            prepareStatement.setInt(1, id);
+            resultat = prepareStatement.executeQuery();
+            while (resultat.next()) {	
+				company = CompanyMapper.getCompany(resultat);
+				
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return company;
 	}
 
 }
