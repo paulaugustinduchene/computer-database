@@ -16,10 +16,9 @@ public class ComputerServices {
 		
 	}
 
-	public static void afficherliste() {
+	public static List<Computer> afficherliste() {
 		List<Computer> computers = daoconnexion.getComputerDao().list();
-		System.out.println(computers);
-		//return computers;
+		return computers;
 	}
 	
 	public static List<Computer> afficherPage(int low, int high){
