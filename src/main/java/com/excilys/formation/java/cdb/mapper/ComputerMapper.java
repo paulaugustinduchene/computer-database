@@ -17,5 +17,14 @@ public class ComputerMapper {
 				DateMapper.sqlToLocalDate(results.getDate("discontinued")),
 				results.getInt("company_id"));
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

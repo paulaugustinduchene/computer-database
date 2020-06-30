@@ -8,15 +8,15 @@ import com.excilys.formation.java.cdb.dao.DaoConnexion;
 
 public class CompanyServices {
 
-private static DaoConnexion daoconnexion = new DaoConnexion();
+private static DaoConnexion daoconnexion = DaoConnexion.getInstance();
 	
 	public CompanyServices() {
 		
 	}
 
-	public static void afficherliste() {
+	public static List<Company> afficherliste() {
 		List<Company> companies = daoconnexion.getCompanyDao().list();
-		System.out.println(companies);
+		return companies;
 	}
 	
 	public static void afficherCompany() {

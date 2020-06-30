@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.text.*"%>
-<%@page import="com.excilys.formation.java.cdb.beans.Computer"%>
-<%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="false"%>
+<%@ page import="java.text.*"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -11,9 +12,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="../css/main.css" rel="stylesheet" media="screen">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -74,14 +75,18 @@
 				<!-- Browse attribute computers -->
 
 				<tbody id="results">
+
+					<c:forEach var="computer" items="${List}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="editComputer.html" onclick=""> </a></td>
-							<td>introduced</td>
-							<td>discontinued</td>
-							<td>company</td>
+							<td><a href="editComputer.html" onclick="">
+									${computer.name}</a></td>
+							<td>${computer.introduced}</td>
+							<td>${computer.discontinuted}</td>
+							<td>${computer.company_id}</td>
 						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
@@ -107,6 +112,7 @@
 				<button type="button" class="btn btn-default">50</button>
 				<button type="button" class="btn btn-default">100</button>
 			</div>
+		</div>
 	</footer>
 
 	<script src="../js/jquery.min.js"></script>

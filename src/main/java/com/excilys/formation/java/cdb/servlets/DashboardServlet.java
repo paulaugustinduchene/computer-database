@@ -15,7 +15,7 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
 /**
  * Servlet implementation class DashboardServlet
  */
-@WebServlet("/")
+@WebServlet("/listComputer")
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -31,11 +31,11 @@ public class DashboardServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Computer> computers = ComputerServices.afficherliste();
-		for(Computer computer : computers) {
-			request.setAttribute("Name", computer.getName());
-		}
-		 this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp").forward(request, response);
+		List<Computer> computers = ComputerServices.afficherliste(); 
+		request.getParameter("List");
+		request.setAttribute("List", computers);
+		 this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
+		 
 	}
 
 	/**

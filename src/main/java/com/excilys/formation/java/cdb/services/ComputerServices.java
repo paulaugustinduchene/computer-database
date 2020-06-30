@@ -10,7 +10,7 @@ import com.excilys.formation.java.cdb.dao.DaoConnexion;
 
 public class ComputerServices {
 	
-	private static DaoConnexion daoconnexion = new DaoConnexion();
+	private static DaoConnexion daoconnexion = DaoConnexion.getInstance();
 	
 	public ComputerServices() {
 		
