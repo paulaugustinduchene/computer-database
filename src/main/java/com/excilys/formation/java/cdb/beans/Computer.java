@@ -13,16 +13,17 @@ public class Computer {
 	
 	
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinuted, int company_id) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinuted = discontinuted;
 		this.company_id = company_id;
 	}
+
 	public Computer() {
-	
+		// TODO Auto-generated constructor stub
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -62,6 +63,52 @@ public class Computer {
 
 	
 	
-	
+	 public static class Builder {
+		 
+		  	private int idComputer;
+	        private String name;
+	        private LocalDate introducedDate;
+	        private LocalDate discontinuedDate;
+	        private int company;
+
+	        public Builder setIdComputer(int idComputer) {
+	            this.idComputer = idComputer;
+	            return this;
+	        }
+
+	        public Builder setName(String name) {
+	            this.name = name;
+	            return this;
+	        }
+
+	        public Builder setIntroduced(LocalDate introducedDate) {
+	            this.introducedDate = introducedDate;
+	            return this;
+	        }
+
+	        public Builder setDiscontinued(LocalDate discontinuedDate) {
+	            this.discontinuedDate = discontinuedDate;
+	            return this;
+	        }
+
+	        public Builder setCompany(int  company) {
+	            this.company = company;
+	            return this;
+	        }
+
+	        public Computer build() {
+	            Computer computer = new Computer();
+	            computer.id = this.idComputer;
+	            computer.name = this.name;
+	            computer.introduced = this.introducedDate;
+	            computer.discontinuted = this.discontinuedDate;
+	            computer.company_id = this.company;
+	            return computer;
+	        }
+	    }
+		 
+	 
 	
 }
+
+

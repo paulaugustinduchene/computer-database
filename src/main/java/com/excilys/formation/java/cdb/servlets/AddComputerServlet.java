@@ -9,8 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.beans.Computer;
+import com.excilys.formation.java.cdb.cli.ClientInterface;
 import com.excilys.formation.java.cdb.dto.ComputerDTO;
 import com.excilys.formation.java.cdb.mapper.ComputerMapperDTO;
 import com.excilys.formation.java.cdb.services.CompanyServices;
@@ -21,46 +25,65 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
  */
 @WebServlet("/addcomputer")
 public class AddComputerServlet extends HttpServlet {
+
+	Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
+
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> companies = CompanyServices.afficherliste(); 
+	public AddComputerServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		List<Company> companies = CompanyServices.afficherliste();
 		request.getParameter("ListCompanies");
 		request.setAttribute("ListCompanies", companies);
 		this.getServletContext().getRequestDispatcher("/views/addcomputer.jsp").forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String name = request.getParameter("computerName");
-        request.setAttribute("computerName", name);
-        String introduced = request.getParameter("introduced");
-        request.setAttribute("introduced", introduced);
-        String discontinued = request.getParameter("discontinued");
-        request.setAttribute("discontinued", discontinued);
-        String company_id = request.getParameter("companyId");
-        request.setAttribute("companyId", company_id );
-        
-        ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
-        
-        ComputerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
-        
-        
+		// request.setAttribute("computerName", name);
+		String introduced = null;
+		String discontinued = null;
+
+		if (request.getParameter("introduced") != "") {
+			introduced = request.getParameter("introduced");
+			// request.setAttribute("introduced", introduced);
+		}
+		if (request.getParameter("discontinued") != "") {
+			discontinued = request.getParameter("discontinued");
+			// request.setAttribute("discontinued", discontinued);
+		}
+		String company_id = request.getParameter("companyId");
+		// request.setAttribute("companyId", company_id );
+
+		System.out.println("name" +  name + " " +company_id);
+
+		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
+
+		if(request.getParameter("computerName") != "") {
+		ComputerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
+		} else {
+			logger.error("name field can't be empty ! ");
+		}
+		
+		doGet(request, response);
 	}
 
 }

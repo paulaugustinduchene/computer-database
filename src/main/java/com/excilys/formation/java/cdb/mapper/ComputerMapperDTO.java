@@ -20,7 +20,7 @@ public class ComputerMapperDTO {
 		String name = computerDto.getName();
 		LocalDate introduced = DateMapper.stringToLocalDate(computerDto.getIntroduced());
 		LocalDate discontinued = DateMapper.stringToLocalDate(computerDto.getIntroduced());
-		int company_id = Integer.valueOf(computerDto.getCompanyId());
+		int company_id = (int) Integer.valueOf(computerDto.getCompanyId());
 		
 		Computer computer = new Computer();
 		computer.setName(name);
