@@ -13,27 +13,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.formation.java.cdb.beans.Company;
-import com.excilys.formation.java.cdb.beans.Computer;
-import com.excilys.formation.java.cdb.cli.ClientInterface;
 import com.excilys.formation.java.cdb.dto.ComputerDTO;
 import com.excilys.formation.java.cdb.mapper.ComputerMapperDTO;
 import com.excilys.formation.java.cdb.services.CompanyServices;
 import com.excilys.formation.java.cdb.services.ComputerServices;
 
 /**
- * Servlet implementation class AddComputerServlet
+ * Servlet implementation class EditComputer
  */
-@WebServlet("/addcomputer")
-public class AddComputerServlet extends HttpServlet {
+@WebServlet("/editcomputer")
+public class EditComputer extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AddComputerServlet() {
+	public EditComputer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,11 +42,15 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Company> companies = CompanyServices.afficherliste();
+
 		request.getParameter("ListCompanies");
 		request.setAttribute("ListCompanies", companies);
-		
-		
+
+		request.getParameter("id");
+		request.setAttribute("id", request.getParameter("id"));
+
 		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
+
 	}
 
 	/**
@@ -59,8 +60,10 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String id = request.getParameter("id");
+
 		String name = request.getParameter("computerName");
-		// request.setAttribute("computerName", name);
+
 		String introduced = null;
 		String discontinued = null;
 
@@ -75,16 +78,18 @@ public class AddComputerServlet extends HttpServlet {
 		String company_id = request.getParameter("companyId");
 		// request.setAttribute("companyId", company_id );
 
-		System.out.println("name" +  name + " " +company_id);
+		logger.info("id : " + id + " name : " + name + " " + company_id);
 
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
-
-		if(request.getParameter("computerName") != "") {
-		ComputerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
+		computerDTO.setId(id);
+		System.out.println(computerDTO.getId()+ " " + computerDTO.getName());
+		if (request.getParameter("computerName") != "") {
+			ComputerServices.update(new ComputerMapperDTO().dtoToComputer(computerDTO));
+			logger.info("computer updated");
 		} else {
 			logger.error("name field can't be empty ! ");
 		}
-		
+
 		doGet(request, response);
 	}
 

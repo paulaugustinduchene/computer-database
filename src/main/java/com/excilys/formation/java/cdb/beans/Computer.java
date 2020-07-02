@@ -2,12 +2,21 @@ package com.excilys.formation.java.cdb.beans;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import javax.validation.constraints.*;
+
 public class Computer {
 	
+	@NotNull
 	private int id;
+	
+	@NotNull
+	@Size(max=255)
 	private String name;
+	
 	private LocalDate introduced;
+	
 	private LocalDate discontinuted;
+	
 	private int company_id;
 	
 	
@@ -61,8 +70,6 @@ public class Computer {
 				+ discontinuted + ", company_id=" + company_id + "]\n";
 	}
 
-	
-	
 	 public static class Builder {
 		 
 		  	private int idComputer;

@@ -11,20 +11,10 @@ public class ComputerMapper {
 	
 	public static Computer getComputer(ResultSet results) throws SQLException {
 		
-		return new Computer(results.getInt("id"),
-				results.getString("name"), 
-				DateMapper.sqlToLocalDate(results.getDate("introduced")),
-				DateMapper.sqlToLocalDate(results.getDate("discontinued")),
-				results.getInt("company_id"));
+		return new Computer.Builder().setIdComputer(results.getInt("id")).setName(results.getString("name"))
+				.setIntroduced(DateMapper.sqlToLocalDate(results.getDate("introduced"))).
+				setDiscontinued(DateMapper.sqlToLocalDate(results.getDate("discontinued"))).setCompany(results.getInt("company_id")).build();
+	
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

@@ -130,6 +130,31 @@ public class ComputerDaoImpl implements ComputerDao{
 	}
 	
 	
+	public List<Computer> getByName(String search) {
+		
+		List<Computer> computersSelection = new ArrayList<Computer>();
+		
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null; 
+        
+        try{
+            connexion = daoConnexion.getConnexion();
+            preparedStatement = connexion.prepareStatement("SELECT * FROM computer WHERE name LIKE ?");
+            preparedStatement.setNString(1, search);
+            resultat = preparedStatement.executeQuery();
+            
+            while(resultat.next()){
+            	Computer computer = ComputerMapper.getComputer(resultat);
+            	computersSelection.add(computer);
+            	
+            }
+        	
+        }catch(SQLException e) {
+        	e.printStackTrace();
+        }
+		return computersSelection;
+	}
 
 
 		

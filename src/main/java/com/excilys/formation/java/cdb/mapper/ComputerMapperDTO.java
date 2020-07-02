@@ -17,12 +17,15 @@ public class ComputerMapperDTO {
 	}
 	
 	public Computer dtoToComputer(ComputerDTO computerDto){
+		int id = Integer.valueOf(computerDto.getId());
 		String name = computerDto.getName();
 		LocalDate introduced = DateMapper.stringToLocalDate(computerDto.getIntroduced());
 		LocalDate discontinued = DateMapper.stringToLocalDate(computerDto.getIntroduced());
 		int company_id = (int) Integer.valueOf(computerDto.getCompanyId());
 		
+		
 		Computer computer = new Computer();
+		computer.setId(id);
 		computer.setName(name);
 		computer.setIntroduced(introduced);
 		computer.setDiscontinuted(discontinued);

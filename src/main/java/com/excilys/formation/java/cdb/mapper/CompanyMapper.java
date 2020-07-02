@@ -10,9 +10,8 @@ public class CompanyMapper {
 
 public static Company getCompany(ResultSet results) throws SQLException {
 		
-		return new Company(results.getInt("id"),
-				results.getString("name")
-				);
+		return new Company.Builder().setId(results.getInt("id"))
+				.setName(results.getString("name")).build();
 	}
 	
 }
