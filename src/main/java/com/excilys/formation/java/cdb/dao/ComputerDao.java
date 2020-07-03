@@ -15,5 +15,6 @@ public interface ComputerDao {
 
 	public List<Computer> listpage(int low, int high);
 	
+	public List<Computer> getByName(String search);
 	
 }

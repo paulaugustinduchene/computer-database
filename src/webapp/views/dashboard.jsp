@@ -33,7 +33,7 @@
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
+					<form id="searchForm" action="listComputer" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
@@ -45,7 +45,7 @@
 					<a class="btn btn-success" id="addComputer"
 						href="/computer-database_maven/addcomputer">Add Computer</a> <a
 						class="btn btn-default" id="editComputer"
-						href="/computer-database_maven/editcomputer"
+						href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
+						<th>Computer name <a href="/computer-database_maven/listComputer?orderAsc=${order}"></a>&#9650;</th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
@@ -127,9 +127,9 @@
 		</div>
 	</footer>
 
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/dashboard.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/dashboard.js"></script>
 
 </body>
 </html>
