@@ -45,16 +45,26 @@ public class DashboardServlet extends HttpServlet {
 
 		if (request.getParameter("search") == null || request.getParameter("search").isEmpty()) {
 
+			if(request.getParameter("orderAsc") == null) {
 			computers = ComputerServices.afficherliste();
 
 			request.getParameter("List");
 			request.setAttribute("List", computers);
+			
+			} else {
+				
+				computers = ComputerServices.orderByComputer();
 
+				request.getParameter("List");
+				request.setAttribute("List", computers);			
+			}
+			
 		} else {
 
 			StringBuilder search = new StringBuilder("%");
 			search.append(request.getParameter("search"));
 			search.append("%");
+			
 			request.setAttribute("search", search);
 			
 			logger.info("search request is : " + search );

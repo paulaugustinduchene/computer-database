@@ -172,7 +172,7 @@ public class ComputerDaoImpl implements ComputerDao{
 	        try {
 	            connexion = daoConnexion.getConnexion();
 	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT * FROM computer ORDER BY ASC name;");
+	            resultat = statement.executeQuery("SELECT * FROM computer ORDER BY name;");
 	            
 	            
 	            while (resultat.next()) {	

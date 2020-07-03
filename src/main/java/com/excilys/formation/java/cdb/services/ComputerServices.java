@@ -63,4 +63,23 @@ public class ComputerServices {
 		}
 		return computers;
 	}
+	
+	
+	public static List<Computer> orderByComputer() {
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			computers = daoconnexion.getComputerDao().orderByComputer();
+		} catch (Exception e) {
+			logger.error("ERROR in computerservices .search()");
+		}
+		return computers;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

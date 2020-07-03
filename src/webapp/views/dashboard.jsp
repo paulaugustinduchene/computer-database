@@ -73,7 +73,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a href="/computer-database_maven/listComputer?orderAsc=${order}"></a>&#9650;</th>
+						<th>Computer name <a href="/computer-database_maven/listComputer?orderAsc=true">&#9650;</a></th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
