@@ -164,7 +164,7 @@ public class ComputerDaoImpl implements ComputerDao{
 
 
 	public List<Computer> orderByComputer() {
-		 List<Computer> computers = new ArrayList<Computer>();
+		 	List<Computer> computers = new ArrayList<Computer>();
 	        Connection connexion = null;
 	        Statement statement = null;
 	        ResultSet resultat = null;
@@ -185,6 +185,34 @@ public class ComputerDaoImpl implements ComputerDao{
 	        }
 	        return computers;
 	    
+	}
+
+	@Override
+	public int countComputer() {
+		
+		int computerNb = 0;
+		
+		
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null; 
+        
+        try{
+            connexion = daoConnexion.getConnexion();
+            preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
+            resultat = preparedStatement.executeQuery();
+            
+
+            while(resultat.next()) {
+            computerNb = resultat.getInt(1);
+        }
+            
+        }catch(SQLException e) {
+        	logger.error("error in count Computers SQL");
+        	e.printStackTrace();
+        }
+		
+		return computerNb;
 	}
 		
 

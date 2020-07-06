@@ -26,7 +26,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">121 Computers found</h1>
+			<h1 id="homeTitle"> ${count} Computers found</h1>
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="listComputer" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 

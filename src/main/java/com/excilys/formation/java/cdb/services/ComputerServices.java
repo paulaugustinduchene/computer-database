@@ -76,7 +76,10 @@ public class ComputerServices {
 	}
 	
 	
-	
+	public static int countComputers() {
+		int computerNb = daoconnexion.getComputerDao().countComputer();
+		return computerNb;
+	}
 	
 	
 	

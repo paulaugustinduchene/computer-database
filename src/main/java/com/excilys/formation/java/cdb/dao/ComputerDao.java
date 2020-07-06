@@ -18,5 +18,7 @@ public interface ComputerDao {
 	public List<Computer> getByName(String search);
 	
 	public List<Computer> orderByComputer();
+
+	public int countComputer();
 	
 }

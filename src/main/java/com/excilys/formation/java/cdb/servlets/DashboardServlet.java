@@ -2,6 +2,8 @@ package com.excilys.formation.java.cdb.servlets;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,9 +22,9 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
  */
 @WebServlet("/listComputer")
 public class DashboardServlet extends HttpServlet {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -41,33 +43,37 @@ public class DashboardServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		List<Computer> computers;
-		
+
+		int computerNb = ComputerServices.countComputers();
+
+		request.getParameter("count");
+		request.setAttribute("count", computerNb);
 
 		if (request.getParameter("search") == null || request.getParameter("search").isEmpty()) {
 
-			if(request.getParameter("orderAsc") == null) {
-			computers = ComputerServices.afficherliste();
+			if (request.getParameter("orderAsc") == null) {
+				computers = ComputerServices.afficherliste();
 
-			request.getParameter("List");
-			request.setAttribute("List", computers);
-			
+				request.getParameter("List");
+				request.setAttribute("List", computers);
+
 			} else {
-				
+
 				computers = ComputerServices.orderByComputer();
 
 				request.getParameter("List");
-				request.setAttribute("List", computers);			
+				request.setAttribute("List", computers);
 			}
-			
+
 		} else {
 
 			StringBuilder search = new StringBuilder("%");
 			search.append(request.getParameter("search"));
 			search.append("%");
-			
+
 			request.setAttribute("search", search);
-			
-			logger.info("search request is : " + search );
+
+			logger.info("search request is : " + search);
 
 			computers = ComputerServices.search(search);
 
@@ -85,6 +91,20 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		if (request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
+
+			String id = request.getParameter("selection");
+
+			System.out.println("id :" + id);
+
+			List<Integer> ListId = Stream.of(id.split(","))
+					.map(Integer::parseInt).collect(Collectors.toList());
+
+			for (Integer computerId : ListId) {
+				ComputerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
+			}
+		}
 
 		doGet(request, response);
 	}
