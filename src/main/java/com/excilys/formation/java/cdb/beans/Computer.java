@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.*;
 
+import com.excilys.formation.java.cdb.services.CompanyServices;
+
 public class Computer {
 	
 	@NotNull
@@ -17,8 +19,7 @@ public class Computer {
 	
 	private LocalDate discontinuted;
 	
-	private int company_id;
-	
+	private Company company; 
 	
 	
 	public Computer(int id, String name, LocalDate introduced, LocalDate discontinuted, int company_id) {
@@ -26,7 +27,7 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinuted = discontinuted;
-		this.company_id = company_id;
+		this.company = CompanyServices.afficherCompany(company_id);
 	}
 
 	public Computer() {
@@ -57,17 +58,30 @@ public class Computer {
 	public void setDiscontinuted(LocalDate localDate) {
 		this.discontinuted = localDate;
 	}
+	
 	public int getCompany_id() {
-		return company_id;
+		return company.getId();
 	}
 	public void setCompany_id(int company_id) {
-		this.company_id = company_id;
+		this.company= CompanyServices.afficherCompany(company_id);
 	}
+	
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	
+	
 	
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinuted="
-				+ discontinuted + ", company_id=" + company_id + "]\n";
+				+ discontinuted + ", company_id=" + company.getName() + "]\n";
 	}
 
 	 public static class Builder {
@@ -76,7 +90,7 @@ public class Computer {
 	        private String name;
 	        private LocalDate introducedDate;
 	        private LocalDate discontinuedDate;
-	        private int company;
+	        private Company company;
 
 	        public Builder setIdComputer(int idComputer) {
 	            this.idComputer = idComputer;
@@ -98,8 +112,8 @@ public class Computer {
 	            return this;
 	        }
 
-	        public Builder setCompany(int  company) {
-	            this.company = company;
+	        public Builder setCompany(int  company_id) {
+	            this.company = CompanyServices.afficherCompany(company_id);
 	            return this;
 	        }
 
@@ -109,7 +123,7 @@ public class Computer {
 	            computer.name = this.name;
 	            computer.introduced = this.introducedDate;
 	            computer.discontinuted = this.discontinuedDate;
-	            computer.company_id = this.company;
+	            computer.company = this.company;
 	            return computer;
 	        }
 	    }

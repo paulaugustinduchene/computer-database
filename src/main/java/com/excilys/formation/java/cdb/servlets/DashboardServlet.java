@@ -45,6 +45,8 @@ public class DashboardServlet extends HttpServlet {
 		List<Computer> computers;
 
 		int computerNb = ComputerServices.countComputers();
+		
+		
 
 		request.getParameter("count");
 		request.setAttribute("count", computerNb);
@@ -95,8 +97,6 @@ public class DashboardServlet extends HttpServlet {
 		if (request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
 
 			String id = request.getParameter("selection");
-
-			System.out.println("id :" + id);
 
 			List<Integer> ListId = Stream.of(id.split(","))
 					.map(Integer::parseInt).collect(Collectors.toList());

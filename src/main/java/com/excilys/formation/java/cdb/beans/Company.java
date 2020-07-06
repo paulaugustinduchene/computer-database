@@ -52,17 +52,10 @@ public class Company {
 			company.id = this.id;
 			company.name = this.name;
 			return company;
-			
-			
-			
+	
 		}
 		
 	}
-	
-	
-	
-	
-	
 	
 }
 
