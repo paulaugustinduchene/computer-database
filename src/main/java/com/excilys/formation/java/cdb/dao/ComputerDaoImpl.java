@@ -161,6 +161,51 @@ public class ComputerDaoImpl implements ComputerDao{
         }
 		return computersSelection;
 	}
+	
+	
+	
+	public List<Computer> getByCompany(int company_id) {
+		
+		List<Computer> computersSelection = new ArrayList<Computer>();
+		
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null; 
+        
+        try{
+            connexion = daoConnexion.getConnexion();
+            preparedStatement = connexion.prepareStatement("SELECT * FROM computer WHERE company_id = ? ");
+            preparedStatement.setInt(1, company_id);
+            resultat = preparedStatement.executeQuery();
+            
+            while(resultat.next()){
+            	Computer computer = ComputerMapper.getComputer(resultat);
+            	computersSelection.add(computer);
+            }
+        	
+        }catch(SQLException e) {
+        	logger.error("error in get by name SQL");
+        	e.printStackTrace();
+        }
+		return computersSelection;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 	public List<Computer> orderByComputer() {

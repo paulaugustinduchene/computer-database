@@ -13,7 +13,8 @@ public class ComputerMapper {
 		
 		return new Computer.Builder().setIdComputer(results.getInt("id")).setName(results.getString("name"))
 				.setIntroduced(DateMapper.sqlToLocalDate(results.getDate("introduced"))).
-				setDiscontinued(DateMapper.sqlToLocalDate(results.getDate("discontinued"))).setCompany(results.getInt("company_id")).build();
+				setDiscontinued(DateMapper.sqlToLocalDate(results.getDate("discontinued")))
+				.setCompany_id(results.getInt("company_id")).build();
 	
 	}
 	

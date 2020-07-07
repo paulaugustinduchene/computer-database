@@ -1,6 +1,7 @@
 package com.excilys.formation.java.cdb.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -96,14 +97,21 @@ public class DashboardServlet extends HttpServlet {
 		
 		if (request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
 
-			String id = request.getParameter("selection");
+			String ids = request.getParameter("selection");
 
-			List<Integer> ListId = Stream.of(id.split(","))
-					.map(Integer::parseInt).collect(Collectors.toList());
+			
+			List<Integer> listId = new ArrayList<Integer>();
+			
+			
+			for(String idd : ids.split(",")) {
+				listId.add(Integer.parseInt(idd));
+			}
 
-			for (Integer computerId : ListId) {
+			for (Integer computerId : listId) {
 				ComputerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
 			}
+			
+
 		}
 
 		doGet(request, response);

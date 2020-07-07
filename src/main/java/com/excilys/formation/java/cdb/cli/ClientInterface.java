@@ -77,6 +77,9 @@ public class ClientInterface {
 				running = false;
 				System.out.println("GoodBye ! ");
 				break;
+			case "companyDel" :
+				deleteCnie();
+				break;
 			}
 
 		}
@@ -145,7 +148,13 @@ public class ClientInterface {
 		int id = scan.nextInt();
 		System.out.println(ComputerServices.showDetails(id - 1).toString());
 	}
-
+	
+	private void deleteCnie() {
+	System.out.print("Enter company id to delete \n" + "computer_db $id >");
+	int company_id = new Scanner(System.in).nextInt();
+	CompanyServices.delete(company_id);
+	System.out.println("computer has been erased from the database ");
+	}
 	/**
 	 * 
 	 * Affiche la liste page par page les commandes

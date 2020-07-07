@@ -19,6 +19,8 @@ public class Computer {
 	
 	private LocalDate discontinuted;
 	
+	private int company_id; 
+	
 	private Company company; 
 	
 	
@@ -27,7 +29,8 @@ public class Computer {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinuted = discontinuted;
-		this.company = CompanyServices.afficherCompany(company_id);
+		this.company_id = company_id;
+		//this.company = CompanyServices.afficherCompany(company_id);
 	}
 
 	public Computer() {
@@ -60,20 +63,26 @@ public class Computer {
 	}
 	
 	public int getCompany_id() {
-		return company.getId();
-	}
-	public void setCompany_id(int company_id) {
-		this.company= CompanyServices.afficherCompany(company_id);
+		return company_id;
+		//return company.getId();
 	}
 	
-
-	public Company getCompany() {
-		return company;
+	public void setCompany_id(int company_id) {
+		this.company_id = company_id;
 	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+	
+//	public void setCompany_id(int company_id) {
+//		this.company= CompanyServices.afficherCompany(company_id);
+//	}
+//	
+//
+//	public Company getCompany() {
+//		return company;
+//	}
+//
+//	public void setCompany(Company company) {
+//		this.company = company;
+//	}
 
 	
 	
@@ -81,7 +90,7 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinuted="
-				+ discontinuted + ", company_id=" + company.getName() + "]\n";
+				+ discontinuted + ", company_id=" +  company_id /* company.getName() */ + "]\n";
 	}
 
 	 public static class Builder {
@@ -90,7 +99,8 @@ public class Computer {
 	        private String name;
 	        private LocalDate introducedDate;
 	        private LocalDate discontinuedDate;
-	        private Company company;
+	        private int company_id;
+//	        private Company company;
 
 	        public Builder setIdComputer(int idComputer) {
 	            this.idComputer = idComputer;
@@ -112,10 +122,16 @@ public class Computer {
 	            return this;
 	        }
 
-	        public Builder setCompany(int  company_id) {
-	            this.company = CompanyServices.afficherCompany(company_id);
+	        
+	        public Builder setCompany_id(int company_id) {
+	            this.company_id = company_id;
 	            return this;
 	        }
+	        
+//	        public Builder setCompany(int  company_id) {
+//	            this.company = CompanyServices.afficherCompany(company_id);
+//	            return this;
+//	        }
 
 	        public Computer build() {
 	            Computer computer = new Computer();
@@ -123,7 +139,8 @@ public class Computer {
 	            computer.name = this.name;
 	            computer.introduced = this.introducedDate;
 	            computer.discontinuted = this.discontinuedDate;
-	            computer.company = this.company;
+	            computer.company_id = this.company_id;
+//	            computer.company = this.company;
 	            return computer;
 	        }
 	    }

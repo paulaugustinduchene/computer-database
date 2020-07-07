@@ -19,9 +19,9 @@ public class DateMapper {
 		else {
 			locdate = LocalDate.parse(date.toString(),format);
 		}
-		return locdate;
-		
+		return locdate;	
 	}
+	
 	
 	public static LocalDate stringToLocalDate(String date) {
 		LocalDate locDate;
@@ -34,6 +34,7 @@ public class DateMapper {
 		}
 		return locDate;
 	}
+	
 	
 	public static Date localDateTosqlDate(LocalDate date) {
 		Date locDate;

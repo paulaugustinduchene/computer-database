@@ -96,7 +96,7 @@
 								onclick=""> ${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinuted}</td>
-							<td>${computer.company.getName()}</td>
+							<td>${computer.company_id}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
