@@ -26,14 +26,15 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle"> ${count} Computers found</h1>
+			<h1 id="homeTitle">${count} Computers found</h1>
 
 
 
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="listComputer" method="GET" class="form-inline">
+					<form id="searchForm" action="listComputer" method="GET"
+						class="form-inline">
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
@@ -44,8 +45,7 @@
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
 						href="/computer-database_maven/addcomputer">Add Computer</a> <a
-						class="btn btn-default" id="editComputer"
-						href="#"
+						class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -73,7 +73,8 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a href="/computer-database_maven/listComputer?orderAsc=true">&#9650;</a></th>
+						<th>Computer name <a
+							href="/computer-database_maven/listComputer?orderAsc=true">&#9650;</a></th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
@@ -110,19 +111,24 @@
 				<li><a href="#" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<c:forEach var="i" begin="${page}" end="${page + 4}">
+					<li><a href="#"> ${i} </a></li>
+				</c:forEach>
+				<li><a
+					href="listComputer?pageLength=${pageLength}&page=${page+1}"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
-
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+				<button type="button" class="btn btn-default">
+					<a href="listComputer?page=1"> 10 </a>
+				</button>
+				<button type="button" class="btn btn-default">
+					<a href="listComputer?pageLength=50&page=1"> 50 </a>
+				</button>
+				<button type="button" class="btn btn-default">
+					<a href="listComputer?pageLength=100&page=1"> 100 </a>
+				</button>
 			</div>
 		</div>
 	</footer>

@@ -9,15 +9,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.mapper.CompanyMapper;
 import com.excilys.formation.java.cdb.mapper.ComputerMapper;
 import com.excilys.formation.java.cdb.mapper.DateMapper;
 
+@Repository
 public class CompanyDaoImpl implements CompanyDao {
 
+	@Autowired
 	private DaoConnexion daoConnexion;
+	
+	
 
 	public CompanyDaoImpl(DaoConnexion daoConnexion) {
 		this.daoConnexion = daoConnexion;
@@ -54,7 +61,7 @@ public class CompanyDaoImpl implements CompanyDao {
 		
 
         try {
-        	Connection connexion = DaoConnexion.getInstance().getConnexion();
+        	Connection connexion = daoConnexion.getConnexion();
         	
             PreparedStatement computerStatement = connexion.prepareStatement("DELETE FROM computer WHERE company_id = ?;");
             computerStatement.setInt(1, company_id);

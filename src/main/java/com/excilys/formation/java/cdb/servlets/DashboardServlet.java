@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.services.ComputerServices;
@@ -22,12 +27,32 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
  * Servlet implementation class DashboardServlet
  */
 @WebServlet("/listComputer")
+@Controller
 public class DashboardServlet extends HttpServlet {
-
-	private static Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
-
 	private static final long serialVersionUID = 1L;
-
+	
+	
+	@Autowired
+	private ComputerServices computerServices;
+	
+	
+	
+	private static Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
+	
+	public int pageLength = 10;
+	public int low = 0;
+	public int high = pageLength;
+	public int page = 1; 
+	
+	
+    public void init(ServletConfig config) throws ServletException
+    {
+    	super.init(config);
+    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
+	
+	
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -36,6 +61,12 @@ public class DashboardServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+	private int maxpage (int computers, int perpage) {
+		return computers/perpage; 
+	}
+	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -45,27 +76,28 @@ public class DashboardServlet extends HttpServlet {
 
 		List<Computer> computers;
 
-		int computerNb = ComputerServices.countComputers();
+		int computerNb = computerServices.countComputers();
 		
+		if(request.getParameter("pageLength") != null) {
+		pageLength = Integer.parseInt(request.getParameter("pageLength"));
+		}
+		
+		int nbPage = maxpage(computerNb, pageLength);
+		
+		if(request.getParameter("page") != null){
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		high = pageLength;
 		
 
-		request.getParameter("count");
-		request.setAttribute("count", computerNb);
 
 		if (request.getParameter("search") == null || request.getParameter("search").isEmpty()) {
 
 			if (request.getParameter("orderAsc") == null) {
-				computers = ComputerServices.afficherliste();
-
-				request.getParameter("List");
-				request.setAttribute("List", computers);
-
+				computers = computerServices.afficherPage(low, high);
 			} else {
-
-				computers = ComputerServices.orderByComputer();
-
-				request.getParameter("List");
-				request.setAttribute("List", computers);
+				computers = computerServices.orderByComputer();
 			}
 
 		} else {
@@ -78,11 +110,23 @@ public class DashboardServlet extends HttpServlet {
 
 			logger.info("search request is : " + search);
 
-			computers = ComputerServices.search(search);
-
-			request.getParameter("List");
-			request.setAttribute("List", computers);
+			computers = computerServices.search(search);
 		}
+		
+		
+		request.getParameter("count");
+		request.setAttribute("count", computerNb);
+		
+		request.getParameter("List");
+		request.setAttribute("List", computers);
+		
+		request.setAttribute("pageLength", pageLength);
+		
+		request.setAttribute("page", page);
+		
+		request.setAttribute("maxpage", nbPage);
+		
+		System.out.println("maxpage = " + nbPage + "");
 
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 
@@ -108,7 +152,7 @@ public class DashboardServlet extends HttpServlet {
 			}
 
 			for (Integer computerId : listId) {
-				ComputerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
+				computerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
 			}
 			
 

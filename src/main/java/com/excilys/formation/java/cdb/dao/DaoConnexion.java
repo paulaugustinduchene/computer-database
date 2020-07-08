@@ -8,10 +8,13 @@ import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.formation.java.cdb.cli.ClientInterface;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
 public class DaoConnexion {
 
 	/*
@@ -28,15 +31,14 @@ public class DaoConnexion {
 
 	public DaoConnexion() {
 
-	}
-
-	public static DaoConnexion getInstance() {
-
 		config = new HikariConfig("/config.properties");
 		ds = new HikariDataSource(config);
-		DaoConnexion instance = new DaoConnexion();
-		return instance;
+	
+	}
 
+//	public static DaoConnexion getInstance() {
+//
+//	}
 		/*
 		 * 
 		 * try { Class.forName("com.mysql.cj.jdbc.Driver");
@@ -46,7 +48,7 @@ public class DaoConnexion {
 		 * 
 		 * DaoConnexion instance = new DaoConnexion(); return instance;
 		 */
-	}
+	
 
 	public Connection getConnexion() throws SQLException {
 		return ds.getConnection();

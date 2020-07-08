@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dao.ComputerDao;
@@ -13,51 +15,53 @@ import com.excilys.formation.java.cdb.dao.ComputerDaoImpl;
 import com.excilys.formation.java.cdb.dao.DaoConnexion;
 import com.excilys.formation.java.cdb.servlets.AddComputerServlet;
 
+@Service
 public class ComputerServices {
 
-	private static DaoConnexion daoconnexion = DaoConnexion.getInstance();
+	@Autowired
+	private ComputerDaoImpl computerDao;
 	private static Logger logger = LoggerFactory.getLogger(ComputerServices.class);
 
 	public ComputerServices() {
 
 	}
 
-	public static List<Computer> afficherliste() {
-		List<Computer> computers = daoconnexion.getComputerDao().list();
+	public List<Computer> afficherliste() {
+		List<Computer> computers = computerDao.list();
 		return computers;
 	}
 
-	public static List<Computer> afficherPage(int low, int high) {
-		List<Computer> computers = daoconnexion.getComputerDao().listpage(low, high);
+	public List<Computer> afficherPage(int low, int high) {
+		List<Computer> computers = computerDao.listpage(low, high);
 		return computers;
 	}
 
-	public static Computer showDetails(int id) {
-		Computer computer = daoconnexion.getComputerDao().list().get(id);
+	public Computer showDetails(int id) {
+		Computer computer = computerDao.list().get(id);
 		return computer;
 	}
 
-	public static void create(Computer computer) {
-		daoconnexion.getComputerDao().add(computer);
+	public void create(Computer computer) {
+		computerDao.add(computer);
 	}
 
-	public static void delete(Computer computer) {
-		daoconnexion.getComputerDao().delete(computer);
+	public void delete(Computer computer) {
+		computerDao.delete(computer);
 	}
 
-	public static void update(Computer computer) {
+	public void update(Computer computer) {
 		try {
-			daoconnexion.getComputerDao().update(computer);
+			computerDao.update(computer);
 			logger.info("update oK");
 		} catch (Exception e) {
 			logger.error("update impossible");
 		}
 	}
 
-	public static List<Computer> search(StringBuilder search) {
+	public List<Computer> search(StringBuilder search) {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers = daoconnexion.getComputerDao().getByName(search.toString());
+			computers = computerDao.getByName(search.toString());
 		} catch (Exception e) {
 			logger.error("ERROR in computerservices .search()");
 		}
@@ -65,10 +69,10 @@ public class ComputerServices {
 	}
 	
 	
-	public static List<Computer> orderByComputer() {
+	public List<Computer> orderByComputer() {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers = daoconnexion.getComputerDao().orderByComputer();
+			computers = computerDao.orderByComputer();
 		} catch (Exception e) {
 			logger.error("ERROR in computerservices .search()");
 		}
@@ -76,8 +80,8 @@ public class ComputerServices {
 	}
 	
 	
-	public static int countComputers() {
-		int computerNb = daoconnexion.getComputerDao().countComputer();
+	public int countComputers() {
+		int computerNb = computerDao.countComputer();
 		return computerNb;
 	}
 	

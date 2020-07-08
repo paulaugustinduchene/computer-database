@@ -12,14 +12,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.mapper.ComputerMapper;
 import com.excilys.formation.java.cdb.mapper.DateMapper;
 import com.excilys.formation.java.cdb.services.ComputerServices;
 
+@Repository
 public class ComputerDaoImpl implements ComputerDao{
 	
+	@Autowired
 	private DaoConnexion daoConnexion;
 	private static Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
@@ -191,21 +195,6 @@ public class ComputerDaoImpl implements ComputerDao{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 
 	public List<Computer> orderByComputer() {
@@ -237,16 +226,13 @@ public class ComputerDaoImpl implements ComputerDao{
 		
 		int computerNb = 0;
 		
-		
-		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultat = null; 
         
         try{
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
-            resultat = preparedStatement.executeQuery();
-            
+        	System.out.println("test");
+            Connection connexion = daoConnexion.getConnexion();
+            PreparedStatement preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
+            ResultSet resultat = preparedStatement.executeQuery();
+            System.out.println(resultat);
 
             while(resultat.next()) {
             computerNb = resultat.getInt(1);

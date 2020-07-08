@@ -3,6 +3,7 @@ package com.excilys.formation.java.cdb.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.beans.Computer;
@@ -24,12 +28,29 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
  * Servlet implementation class AddComputerServlet
  */
 @WebServlet("/addcomputer")
+@Controller
 public class AddComputerServlet extends HttpServlet {
 
-	Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
+	
+	private Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
 
 	private static final long serialVersionUID = 1L;
 
+	
+	@Autowired
+	private ComputerServices computerServices;
+	
+	@Autowired
+	private CompanyServices companyServices;
+	
+	
+	
+    public void init(ServletConfig config) throws ServletException
+    {
+    	super.init(config);
+    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -44,7 +65,7 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Company> companies = CompanyServices.afficherliste();
+		List<Company> companies = companyServices.afficherliste();
 		request.getParameter("ListCompanies");
 		request.setAttribute("ListCompanies", companies);
 		
@@ -80,7 +101,7 @@ public class AddComputerServlet extends HttpServlet {
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
 
 		if(request.getParameter("computerName") != "") {
-		ComputerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
+		computerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
 		} else {
 			logger.error("name field can't be empty ! ");
 		}
