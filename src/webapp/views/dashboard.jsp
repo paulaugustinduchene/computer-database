@@ -28,9 +28,6 @@
 		<div class="container">
 			<h1 id="homeTitle">${count} Computers found</h1>
 
-
-
-
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="listComputer" method="GET"
@@ -44,7 +41,7 @@
 
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="/computer-database_maven/addcomputer">Add Computer</a> <a
+						href="/computer-database_maven/addcomputer"> Add Computer </a> <a
 						class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -89,10 +86,10 @@
 
 					<c:forEach var="computer" items="${List}">
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
+							<td class="editMode"> <input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
 
-							<td><a
+							<td> <a
 								href="/computer-database_maven/editcomputer?id=${computer.id}"
 								onclick=""> ${computer.name}</a></td>
 							<td>${computer.introduced}</td>

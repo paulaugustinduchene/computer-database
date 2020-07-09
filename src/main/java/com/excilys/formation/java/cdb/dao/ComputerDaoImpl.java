@@ -25,6 +25,7 @@ public class ComputerDaoImpl implements ComputerDao{
 	
 	@Autowired
 	private DaoConnexion daoConnexion;
+	
 	private static Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
 	
 	public ComputerDaoImpl( DaoConnexion daoConnexion) {
@@ -41,7 +42,7 @@ public class ComputerDaoImpl implements ComputerDao{
 	        try {
 	            connexion = daoConnexion.getConnexion();
 	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT * FROM computer;");
+	            resultat = statement.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer;");
 
 	            //while (resultat.next()) {
 	            while (resultat.next()) {	
@@ -64,7 +65,7 @@ public class ComputerDaoImpl implements ComputerDao{
 
 	        try {
 	            connexion = daoConnexion.getConnexion();
-	            prepareStatement = connexion.prepareStatement("SELECT * FROM computer WHERE  id >= ? AND  id <= ? ;");
+	            prepareStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE  id >= ? AND  id <= ? ;");
 	            prepareStatement.setInt(1, low);
 	            prepareStatement.setInt(2, high);
 	            resultat = prepareStatement.executeQuery();
@@ -150,7 +151,7 @@ public class ComputerDaoImpl implements ComputerDao{
         
         try{
             connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("SELECT * FROM computer WHERE name LIKE ? ");
+            preparedStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? ");
             preparedStatement.setString(1, search);
             resultat = preparedStatement.executeQuery();
             
@@ -178,7 +179,7 @@ public class ComputerDaoImpl implements ComputerDao{
         
         try{
             connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("SELECT * FROM computer WHERE company_id = ? ");
+            preparedStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = ? ");
             preparedStatement.setInt(1, company_id);
             resultat = preparedStatement.executeQuery();
             
@@ -206,7 +207,7 @@ public class ComputerDaoImpl implements ComputerDao{
 	        try {
 	            connexion = daoConnexion.getConnexion();
 	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT * FROM computer ORDER BY name;");
+	            resultat = statement.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;");
 	            
 	            
 	            while (resultat.next()) {	
@@ -232,7 +233,6 @@ public class ComputerDaoImpl implements ComputerDao{
             Connection connexion = daoConnexion.getConnexion();
             PreparedStatement preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
             ResultSet resultat = preparedStatement.executeQuery();
-            System.out.println(resultat);
 
             while(resultat.next()) {
             computerNb = resultat.getInt(1);

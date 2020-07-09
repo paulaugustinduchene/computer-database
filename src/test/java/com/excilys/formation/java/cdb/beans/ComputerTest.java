@@ -1,4 +1,4 @@
-package com.excilys.formation.java.cdb.test;
+package com.excilys.formation.java.cdb.beans;
 
 import static org.junit.Assert.*;
 

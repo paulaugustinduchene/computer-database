@@ -89,14 +89,17 @@ public class AddComputerServlet extends HttpServlet {
 			introduced = request.getParameter("introduced");
 			// request.setAttribute("introduced", introduced);
 		}
+		
 		if (request.getParameter("discontinued") != "") {
 			discontinued = request.getParameter("discontinued");
 			// request.setAttribute("discontinued", discontinued);
 		}
+		
+		
 		String company_id = request.getParameter("companyId");
 		// request.setAttribute("companyId", company_id );
 
-		System.out.println("name" +  name + " " +company_id);
+		System.out.println("name" +  name + " " + company_id);
 
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
 

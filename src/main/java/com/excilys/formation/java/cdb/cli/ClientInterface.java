@@ -10,9 +10,12 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dao.CompanyDaoImpl;
+import com.excilys.formation.java.cdb.dao.ComputerDao;
 import com.excilys.formation.java.cdb.dao.DaoConnexion;
 import com.excilys.formation.java.cdb.mapper.ComputerMapper;
 import com.excilys.formation.java.cdb.mapper.DateMapper;
@@ -20,9 +23,16 @@ import com.excilys.formation.java.cdb.services.CompanyServices;
 import com.excilys.formation.java.cdb.services.ComputerServices;
 
 
+@Controller
 public class ClientInterface {
 	
 	private Logger logger = LoggerFactory.getLogger(ClientInterface.class);
+	
+	@Autowired
+	private ComputerServices computerServices;
+	
+	@Autowired
+	private CompanyServices companyServices;
 
 	public void Appinit() {
 
@@ -123,7 +133,7 @@ public class ClientInterface {
 				+ "dates should be yyyy-mm-dd");
 		try {
 		Computer computer = scanComputer();
-		ComputerServices.create(computer);
+		computerServices.create(computer);
 		System.out.println("a new computer has been added to the database ");
 		} catch(Exception e) {
 			logger.error("Computer can't be created ! ");
@@ -132,13 +142,13 @@ public class ClientInterface {
 
 	private void update() {
 		Computer computer = scanComputer();
-		ComputerServices.update(computer);
+		computerServices.update(computer);
 		System.out.println("computer has been update in the database ");
 	}
 
 	private void delete() {
 		Computer computer = scanComputer();
-		ComputerServices.delete(computer);
+		computerServices.delete(computer);
 		System.out.println("computer has been erased from the database ");
 	}
 
@@ -146,13 +156,13 @@ public class ClientInterface {
 		System.out.print("Enter computer id to see informations \n" + "computer_db $id >");
 		Scanner scan = new Scanner(System.in);
 		int id = scan.nextInt();
-		System.out.println(ComputerServices.showDetails(id - 1).toString());
+		System.out.println(computerServices.showDetails(id - 1).toString());
 	}
 	
 	private void deleteCnie() {
 	System.out.print("Enter company id to delete \n" + "computer_db $id >");
 	int company_id = new Scanner(System.in).nextInt();
-	CompanyServices.delete(company_id);
+	companyServices.delete(company_id);
 	System.out.println("computer has been erased from the database ");
 	}
 	/**
@@ -164,7 +174,7 @@ public class ClientInterface {
 		Scanner scan = new Scanner(System.in);
 		int low = 1;
 		int high = 10;
-		System.out.println(ComputerServices.afficherPage(low, high).toString());
+		System.out.println(computerServices.afficherPage(low, high).toString());
 		System.out.println("enter 'n' for next 'p' for previous and 'q' to exit list");
 		
 		while (!scan.next().equals("q")) {
@@ -178,7 +188,7 @@ public class ClientInterface {
 			case "n":
 				low += 10;
 				high += 10;
-				System.out.println(ComputerServices.afficherPage(low, high).toString());
+				System.out.println(computerServices.afficherPage(low, high).toString());
 				break;
 			case "p":
 				low += -10;
@@ -187,7 +197,7 @@ public class ClientInterface {
 					low = 1; 
 					high = 10;
 				}
-				System.out.println(ComputerServices.afficherPage(low, high).toString());
+				System.out.println(computerServices.afficherPage(low, high).toString());
 				break;
 			default:
 				System.out.println("ceci n'est pas reconu");

@@ -30,29 +30,22 @@ import com.excilys.formation.java.cdb.services.ComputerServices;
 @Controller
 public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Autowired
 	private ComputerServices computerServices;
-	
-	
-	
+
 	private static Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
-	
+
 	public int pageLength = 10;
 	public int low = 0;
 	public int high = pageLength;
-	public int page = 1; 
-	
-	
-    public void init(ServletConfig config) throws ServletException
-    {
-    	super.init(config);
-    	SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
-	
-	
-	
+	public int page = 1;
+
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -61,12 +54,18 @@ public class DashboardServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	private int maxpage (int computers, int perpage) {
-		return computers/perpage; 
+	private int maxpage(int computers, int perpage) {
+		return computers / perpage;
 	}
-	
-	
+
+	private int setPageLow(int countperpage) {
+		return low = (countperpage * page) - countperpage;
+	}
+
+	private int setPageHigh(int countperpage) {
+		return high = (countperpage * page) - 1;
+	}
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -77,25 +76,23 @@ public class DashboardServlet extends HttpServlet {
 		List<Computer> computers;
 
 		int computerNb = computerServices.countComputers();
-		
-		if(request.getParameter("pageLength") != null) {
-		pageLength = Integer.parseInt(request.getParameter("pageLength"));
+
+		if (request.getParameter("pageLength") != null) {
+			pageLength = Integer.parseInt(request.getParameter("pageLength"));
 		}
-		
+
 		int nbPage = maxpage(computerNb, pageLength);
-		
-		if(request.getParameter("page") != null){
+
+		if (request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
 
 		high = pageLength;
-		
-
 
 		if (request.getParameter("search") == null || request.getParameter("search").isEmpty()) {
 
 			if (request.getParameter("orderAsc") == null) {
-				computers = computerServices.afficherPage(low, high);
+				computers = computerServices.afficherPage(setPageLow(pageLength), setPageHigh(pageLength));
 			} else {
 				computers = computerServices.orderByComputer();
 			}
@@ -112,21 +109,20 @@ public class DashboardServlet extends HttpServlet {
 
 			computers = computerServices.search(search);
 		}
-		
-		
+
 		request.getParameter("count");
 		request.setAttribute("count", computerNb);
-		
+
 		request.getParameter("List");
 		request.setAttribute("List", computers);
-		
+
 		request.setAttribute("pageLength", pageLength);
-		
+
 		request.setAttribute("page", page);
-		
+
 		request.setAttribute("maxpage", nbPage);
-		
-		System.out.println("maxpage = " + nbPage + "");
+
+		logger.info("maxpage = " + nbPage + "");
 
 		this.getServletContext().getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
 
@@ -138,23 +134,20 @@ public class DashboardServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		if (request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
 
 			String ids = request.getParameter("selection");
 
-			
 			List<Integer> listId = new ArrayList<Integer>();
-			
-			
-			for(String idd : ids.split(",")) {
+
+			for (String idd : ids.split(",")) {
 				listId.add(Integer.parseInt(idd));
 			}
 
 			for (Integer computerId : listId) {
 				computerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
 			}
-			
 
 		}
 

@@ -24,12 +24,8 @@ public class ComputerMapperDTO {
 		int company_id = (int) Integer.valueOf(computerDto.getCompanyId());
 		
 		
-		Computer computer = new Computer();
-		computer.setId(id);
-		computer.setName(name);
-		computer.setIntroduced(introduced);
-		computer.setDiscontinuted(discontinued);
-		computer.setCompany_id(company_id);
+		Computer computer = new Computer.Builder().setIdComputer(id).setName(name).setIntroduced(introduced)
+				.setDiscontinued(discontinued).setCompany_id(company_id).build();
 	
 		return computer;
 		

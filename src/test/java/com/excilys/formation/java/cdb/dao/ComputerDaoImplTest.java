@@ -1,13 +1,14 @@
-package com.excilys.formation.java.cdb.test;
+package com.excilys.formation.java.cdb.dao;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.java.cdb.dao.DaoConnexion;
 
 
-
+@Component
 public class ComputerDaoImplTest {
 	
 	@Test
