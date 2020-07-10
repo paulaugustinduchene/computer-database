@@ -26,7 +26,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${count} Computers found</h1>
+			<h1 id="homeTitle">${count}Computersfound</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -86,10 +86,10 @@
 
 					<c:forEach var="computer" items="${List}">
 						<tr>
-							<td class="editMode"> <input type="checkbox" name="cb"
+							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
 
-							<td> <a
+							<td><a
 								href="/computer-database_maven/editcomputer?id=${computer.id}"
 								onclick=""> ${computer.name}</a></td>
 							<td>${computer.introduced}</td>
@@ -109,7 +109,9 @@
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="i" begin="${page}" end="${page + 4}">
-					<li><a href="#"> ${i} </a></li>
+					<li><a
+						href="listComputer?pageLength=${pageLength}&page=${page}">
+							${i} </a></li>
 				</c:forEach>
 				<li><a
 					href="listComputer?pageLength=${pageLength}&page=${page+1}"
@@ -117,15 +119,15 @@
 				</a></li>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">
-					<a href="listComputer?page=1"> 10 </a>
-				</button>
-				<button type="button" class="btn btn-default">
-					<a href="listComputer?pageLength=50&page=1"> 50 </a>
-				</button>
-				<button type="button" class="btn btn-default">
-					<a href="listComputer?pageLength=100&page=1"> 100 </a>
-				</button>
+				<a href="listComputer?pageLength=10&page=1">
+					<button type="button" class="btn btn-default">10</button>
+				</a> 
+				<a href="listComputer?pageLength=50&page=1">
+					<button type="button" class="btn btn-default">50</button>
+				</a> 
+				<a href="listComputer?pageLength=100&page=1">
+					<button type="button" class="btn btn-default">100</button>
+				</a>
 			</div>
 		</div>
 	</footer>

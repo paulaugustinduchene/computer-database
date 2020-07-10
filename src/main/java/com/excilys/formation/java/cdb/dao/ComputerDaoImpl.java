@@ -21,84 +21,86 @@ import com.excilys.formation.java.cdb.mapper.DateMapper;
 import com.excilys.formation.java.cdb.services.ComputerServices;
 
 @Repository
-public class ComputerDaoImpl implements ComputerDao{
-	
+public class ComputerDaoImpl implements ComputerDao {
+
 	@Autowired
 	private DaoConnexion daoConnexion;
-	
+
 	private static Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
-	public ComputerDaoImpl( DaoConnexion daoConnexion) {
-        this.daoConnexion = daoConnexion;
-    }
+
+	public ComputerDaoImpl(DaoConnexion daoConnexion) {
+		this.daoConnexion = daoConnexion;
+	}
 
 	@Override
 	public List<Computer> list() {
-		 List<Computer> computers = new ArrayList<Computer>();
-	        Connection connexion = null;
-	        Statement statement = null;
-	        ResultSet resultat = null;
+		List<Computer> computers = new ArrayList<Computer>();
 
-	        try {
-	            connexion = daoConnexion.getConnexion();
-	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer;");
+		ResultSet resultat = null;
 
-	            //while (resultat.next()) {
-	            while (resultat.next()) {	
-					Computer computer = ComputerMapper.getComputer(resultat);
+		try (Connection connexion = daoConnexion.getConnexion(); 
+			Statement statement = connexion.createStatement()) 
+			{
+			resultat = statement.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer;");
 
-	                computers.add(computer);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return computers;
-	    
+			// while (resultat.next()) {
+			while (resultat.next()) {
+				Computer computer = ComputerMapper.getComputer(resultat);
+
+				computers.add(computer);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return computers;
+
 	}
-	
+
 	public List<Computer> listpage(int low, int high) {
-		 List<Computer> computers = new ArrayList<Computer>();
-	        Connection connexion = null;
-	        PreparedStatement prepareStatement = null;
-	        ResultSet resultat = null;
+		List<Computer> computers = new ArrayList<Computer>();
+		Connection connexion = null;
+		PreparedStatement prepareStatement = null;
+		ResultSet resultat = null;
 
-	        try {
-	            connexion = daoConnexion.getConnexion();
-	            prepareStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE  id >= ? AND  id <= ? ;");
-	            prepareStatement.setInt(1, low);
-	            prepareStatement.setInt(2, high);
-	            resultat = prepareStatement.executeQuery();
-	            while (resultat.next()) {	
-					Computer comp = ComputerMapper.getComputer(resultat);
+		try {
+			connexion = daoConnexion.getConnexion();
+			prepareStatement = connexion.prepareStatement(
+					"SELECT id, name, introduced, discontinued, company_id FROM computer WHERE  id >= ? AND  id <= ? ;");
+			prepareStatement.setInt(1, low);
+			prepareStatement.setInt(2, high);
+			resultat = prepareStatement.executeQuery();
+			while (resultat.next()) {
+				Computer comp = ComputerMapper.getComputer(resultat);
 
-	                computers.add(comp);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return computers;
+				computers.add(comp);
+			}
+			connexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return computers;
 	}
-
 
 	@Override
 	public void add(Computer computer) {
-		
+
 		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement = null;
 
-        try {
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( ?,? , ? , ?);");
-            preparedStatement.setString(1, computer.getName());
-            preparedStatement.setDate(2, DateMapper.localDateTosqlDate(computer.getIntroduced()));
-            preparedStatement.setDate(3, DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
-            preparedStatement.setInt(4, computer.getCompany_id());
+		try {
+			connexion = daoConnexion.getConnexion();
+			preparedStatement = connexion.prepareStatement(
+					"INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( ?,? , ? , ?);");
+			preparedStatement.setString(1, computer.getName());
+			preparedStatement.setDate(2, DateMapper.localDateTosqlDate(computer.getIntroduced()));
+			preparedStatement.setDate(3, DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
+			preparedStatement.setInt(4, computer.getCompany_id());
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } 
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -106,146 +108,141 @@ public class ComputerDaoImpl implements ComputerDao{
 	public void delete(Computer computer) {
 
 		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement = null;
 
-        try {
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("DELETE FROM computer WHERE id = ?; ");
-            preparedStatement.setInt(1, computer.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-		
+		try {
+			connexion = daoConnexion.getConnexion();
+			preparedStatement = connexion.prepareStatement("DELETE FROM computer WHERE id = ?; ");
+			preparedStatement.setInt(1, computer.getId());
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public void update(Computer computer) {
 		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement = null;
 
-        try {
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("UPDATE computer SET id = ?, name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = ?");
-            preparedStatement.setInt(1, computer.getId());
-            preparedStatement.setString(2, computer.getName());
-            preparedStatement.setDate(3, DateMapper.localDateTosqlDate(computer.getIntroduced()));
-            preparedStatement.setDate(4, DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
-            preparedStatement.setInt(5, computer.getCompany_id());
-            preparedStatement.setInt(6, computer.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-		
+		try {
+			connexion = daoConnexion.getConnexion();
+			preparedStatement = connexion.prepareStatement(
+					"UPDATE computer SET id = ?, name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = ?");
+			preparedStatement.setInt(1, computer.getId());
+			preparedStatement.setString(2, computer.getName());
+			preparedStatement.setDate(3, DateMapper.localDateTosqlDate(computer.getIntroduced()));
+			preparedStatement.setDate(4, DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
+			preparedStatement.setInt(5, computer.getCompany_id());
+			preparedStatement.setInt(6, computer.getId());
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
-	
+
 	public List<Computer> getByName(String search) {
-		
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultat = null; 
-        
-        try{
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? ");
-            preparedStatement.setString(1, search);
-            resultat = preparedStatement.executeQuery();
-            
-            while(resultat.next()){
-            	Computer computer = ComputerMapper.getComputer(resultat);
-            	computersSelection.add(computer);
-            }
-        	
-        }catch(SQLException e) {
-        	logger.error("error in get by name SQL");
-        	e.printStackTrace();
-        }
-		return computersSelection;
-	}
-	
-	
-	
-	public List<Computer> getByCompany(int company_id) {
-		
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultat = null; 
-        
-        try{
-            connexion = daoConnexion.getConnexion();
-            preparedStatement = connexion.prepareStatement("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = ? ");
-            preparedStatement.setInt(1, company_id);
-            resultat = preparedStatement.executeQuery();
-            
-            while(resultat.next()){
-            	Computer computer = ComputerMapper.getComputer(resultat);
-            	computersSelection.add(computer);
-            }
-        	
-        }catch(SQLException e) {
-        	logger.error("error in get by name SQL");
-        	e.printStackTrace();
-        }
-		return computersSelection;
-	}
-	
-	
 
+		List<Computer> computersSelection = new ArrayList<Computer>();
+
+		Connection connexion = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultat = null;
+
+		try {
+			connexion = daoConnexion.getConnexion();
+			preparedStatement = connexion.prepareStatement(
+					"SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? ");
+			preparedStatement.setString(1, search);
+			resultat = preparedStatement.executeQuery();
+
+			while (resultat.next()) {
+				Computer computer = ComputerMapper.getComputer(resultat);
+				computersSelection.add(computer);
+			}
+
+		} catch (SQLException e) {
+			logger.error("error in get by name SQL");
+			e.printStackTrace();
+		}
+		return computersSelection;
+	}
+
+	public List<Computer> getByCompany(int company_id) {
+
+		List<Computer> computersSelection = new ArrayList<Computer>();
+
+		Connection connexion = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultat = null;
+
+		try {
+			connexion = daoConnexion.getConnexion();
+			preparedStatement = connexion.prepareStatement(
+					"SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = ? ");
+			preparedStatement.setInt(1, company_id);
+			resultat = preparedStatement.executeQuery();
+
+			while (resultat.next()) {
+				Computer computer = ComputerMapper.getComputer(resultat);
+				computersSelection.add(computer);
+			}
+
+		} catch (SQLException e) {
+			logger.error("error in get by name SQL");
+			e.printStackTrace();
+		}
+		return computersSelection;
+	}
 
 	public List<Computer> orderByComputer() {
-		 	List<Computer> computers = new ArrayList<Computer>();
-	        Connection connexion = null;
-	        Statement statement = null;
-	        ResultSet resultat = null;
+		List<Computer> computers = new ArrayList<Computer>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
 
-	        try {
-	            connexion = daoConnexion.getConnexion();
-	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;");
-	            
-	            
-	            while (resultat.next()) {	
-					Computer computer = ComputerMapper.getComputer(resultat);
+		try {
+			connexion = daoConnexion.getConnexion();
+			statement = connexion.createStatement();
+			resultat = statement
+					.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;");
 
-	                computers.add(computer);
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return computers;
-	    
+			while (resultat.next()) {
+				Computer computer = ComputerMapper.getComputer(resultat);
+
+				computers.add(computer);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return computers;
+
 	}
 
 	@Override
 	public int countComputer() {
-		
-		int computerNb = 0;
-		
-        
-        try{
-        	System.out.println("test");
-            Connection connexion = daoConnexion.getConnexion();
-            PreparedStatement preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
-            ResultSet resultat = preparedStatement.executeQuery();
 
-            while(resultat.next()) {
-            computerNb = resultat.getInt(1);
-        }
-            
-        }catch(SQLException e) {
-        	logger.error("error in count Computers SQL");
-        	e.printStackTrace();
-        }
-		
+		int computerNb = 0;
+
+		try {
+			System.out.println("test");
+			Connection connexion = daoConnexion.getConnexion();
+			PreparedStatement preparedStatement = connexion.prepareStatement("SELECT count(id) FROM computer ");
+			ResultSet resultat = preparedStatement.executeQuery();
+
+			while (resultat.next()) {
+				computerNb = resultat.getInt(1);
+			}
+
+			connexion.close();
+		} catch (SQLException e) {
+			logger.error("error in count Computers SQL");
+			e.printStackTrace();
+		}
+
 		return computerNb;
 	}
-		
 
 }
-
