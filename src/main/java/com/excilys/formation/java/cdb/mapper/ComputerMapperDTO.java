@@ -7,7 +7,7 @@ import com.excilys.formation.java.cdb.dto.ComputerDTO;
 
 public class ComputerMapperDTO {
 	
-	public ComputerDTO computerToDTO(Computer computer) {
+	public static ComputerDTO computerToDTO(Computer computer) {
 		String name = computer.getName();
 		String introduced = computer.getIntroduced().toString();
 		String discontinued = computer.getIntroduced().toString();
@@ -16,8 +16,8 @@ public class ComputerMapperDTO {
 		return new ComputerDTO(name, introduced,discontinued, company_id);
 	}
 	
-	public Computer dtoToComputer(ComputerDTO computerDto){
-		int id = Integer.valueOf(computerDto.getId());
+	public static Computer dtoToComputer(ComputerDTO computerDto){
+		int id = (int) Integer.valueOf(computerDto.getId());
 		String name = computerDto.getName();
 		LocalDate introduced = DateMapper.stringToLocalDate(computerDto.getIntroduced());
 		LocalDate discontinued = DateMapper.stringToLocalDate(computerDto.getIntroduced());

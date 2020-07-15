@@ -40,5 +40,9 @@ public class DaoConnexion {
 	public CompanyDao getCompanyDao() {
 		return new CompanyDaoImpl(this);
 	}
+	
+	public HikariDataSource getDS() {
+		return ds; 
+	}
 
 }

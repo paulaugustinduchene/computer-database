@@ -64,6 +64,7 @@ public class ComputerServices {
 			computers = computerDao.getByName(search.toString());
 		} catch (Exception e) {
 			logger.error("ERROR in computerservices .search()");
+			logger.error(e.getMessage());
 		}
 		return computers;
 	}

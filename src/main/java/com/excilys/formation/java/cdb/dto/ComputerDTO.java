@@ -60,48 +60,48 @@ public class ComputerDTO {
 		this.companyId = companyId;
 	}
 
-//	public static class Builder(){
-//
-//		private String id;
-//		private String name;
-//		private String introduced;
-//		private String discontinued;
-//		private String companyId;
-//
-//		public Builder setId(String id) {
-//			this.id = id;
-//			return this;
-//		}
-//
-//		public Builder setName(String name) {
-//			this.name = name;
-//			return this;
-//		}
-//
-//		public Builder setIntroduced(String introduced) {
-//			this.introduced = introduced;
-//			return this;
-//		}
-//
-//		public Builder setDiscontinued(String discontinued) {
-//			this.discontinued = discontinued;
-//			return this;
-//		}
-//
-//		public Builder setCompanyId(String companyId) {
-//			this.companyId = companyId;
-//			return this;
-//		}
-//
-//		public ComputerDTO build() {
-//			ComputerDTO computer = new ComputerDTO();
-//			computer.id = this.id;
-//			computer.name = this.name;
-//			computer.introduced = this.introduced;
-//			computer.discontinued = this.discontinued;
-//			computer.companyId = this.companyId;
-//			return computer;
-//
-//		}
+	public static class Builder{
 
+		private String id;
+		private String name;
+		private String introduced;
+		private String discontinued;
+		private String companyId;
+
+		public Builder setId(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder setName(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder setIntroduced(String introduced) {
+			this.introduced = introduced;
+			return this;
+		}
+
+		public Builder setDiscontinued(String discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public Builder setCompanyId(String companyId) {
+			this.companyId = companyId;
+			return this;
+		}
+
+		public ComputerDTO build() {
+			ComputerDTO computer = new ComputerDTO();
+			computer.id = this.id;
+			computer.name = this.name;
+			computer.introduced = this.introduced;
+			computer.discontinued = this.discontinued;
+			computer.companyId = this.companyId;
+			return computer;
+
+		}
+	}
 }
