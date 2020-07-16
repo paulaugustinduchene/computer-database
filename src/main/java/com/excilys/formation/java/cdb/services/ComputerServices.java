@@ -58,6 +58,7 @@ public class ComputerServices {
 		}
 	}
 
+	
 	public List<Computer> search(StringBuilder search) {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
@@ -65,9 +66,11 @@ public class ComputerServices {
 		} catch (Exception e) {
 			logger.error("ERROR in computerservices .search()");
 			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return computers;
 	}
+	
 	
 	
 	public List<Computer> orderByComputer() {
@@ -75,10 +78,11 @@ public class ComputerServices {
 		try {
 			computers = computerDao.orderByComputer();
 		} catch (Exception e) {
-			logger.error("ERROR in computerservices .search()");
+			logger.error("ERROR in computerservices .orderByComputer()");
 		}
 		return computers;
 	}
+	
 	
 	
 	public int countComputers() {

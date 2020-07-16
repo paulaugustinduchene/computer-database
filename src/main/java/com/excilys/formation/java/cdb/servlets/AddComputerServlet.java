@@ -70,7 +70,7 @@ public class AddComputerServlet extends HttpServlet {
 		request.setAttribute("ListCompanies", companies);
 		
 		
-		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/views/addcomputer.jsp").forward(request, response);
 	}
 
 	/**
@@ -79,9 +79,14 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		String name = request.getParameter("computerName");
+		
+		String name = null; 
+		
+		if(request.getParameter("computerName") != "") {
+		 name = request.getParameter("computerName");
 		// request.setAttribute("computerName", name);
+		}
+		
 		String introduced = null;
 		String discontinued = null;
 
@@ -104,7 +109,8 @@ public class AddComputerServlet extends HttpServlet {
 		ComputerDTO computerDTO = new ComputerDTO(name, introduced, discontinued, company_id);
 
 		if(request.getParameter("computerName") != "") {
-		computerServices.create(new ComputerMapperDTO().dtoToComputer(computerDTO));
+		new ComputerMapperDTO();
+		computerServices.create(ComputerMapperDTO.dtoToComputer(computerDTO));
 		} else {
 			logger.error("name field can't be empty ! ");
 		}

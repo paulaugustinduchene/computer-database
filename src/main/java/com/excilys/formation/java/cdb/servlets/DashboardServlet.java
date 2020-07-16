@@ -139,7 +139,10 @@ public class DashboardServlet extends HttpServlet {
 
 			String ids = request.getParameter("selection");
 
+			System.out.println(ids);
 			List<Integer> listId = new ArrayList<Integer>();
+			
+
 
 			for (String idd : ids.split(",")) {
 				listId.add(Integer.parseInt(idd));
@@ -148,9 +151,7 @@ public class DashboardServlet extends HttpServlet {
 			for (Integer computerId : listId) {
 				computerServices.delete(new Computer.Builder().setIdComputer(computerId).build());
 			}
-
 		}
-
 		doGet(request, response);
 	}
 

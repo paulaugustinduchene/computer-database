@@ -74,9 +74,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		List<Computer> computersSelection = new ArrayList<Computer>();
 		
-		String sqlPage = "SELECT id, name, introduced, discontinued, company_id FROM computer ;";
+		String sqlPage = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id < :high AND id > :low ;";
 
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(daoConnexion.getDS());
+		MapSqlParameterSource parameters = new MapSqlParameterSource(); 
+		parameters.addValue("high", high);
+		parameters.addValue("low", low);
 			
 			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
 
@@ -98,7 +101,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		};
 		
-		computersSelection = jdbcTemplate.query(sqlPage,rowMapper);
+		computersSelection = jdbcTemplate.query(sqlPage,parameters,rowMapper);
 		
 		return computersSelection;
 		
@@ -108,15 +111,14 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void add(Computer computer) {
 
-		String sqlAdd = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( ?, ? , ? , ?);";
+		String sqlAdd = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( :name, :introduced , :discontinued , :company_id);";
 
 		try {
-
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
 			parameters.addValue("name", computer.getName());
-			parameters.addValue("name", DateMapper.localDateTosqlDate(computer.getIntroduced()));
-			parameters.addValue("name", DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
-			parameters.addValue("name", computer.getCompany_id());
+			parameters.addValue("introduced", DateMapper.localDateTosqlDate(computer.getIntroduced()));
+			parameters.addValue("discontinued", DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
+			parameters.addValue("company_id", computer.getCompany_id());
 			NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(daoConnexion.getDS());
 			jdbcTemplate.update(sqlAdd, parameters);
 
@@ -127,14 +129,15 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	}
 
+	
 	@Override
 	public void delete(Computer computer) {
 
-		String sqlDelete = "DELETE FROM computer WHERE id = ?; ";
+		String sqlDelete = "DELETE FROM computer WHERE id = :id ; ";
 
 		try {
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("name", computer.getId());
+			parameters.addValue("id", computer.getId());
 			NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(daoConnexion.getDS());
 			jdbcTemplate.update(sqlDelete, parameters);
 
@@ -149,10 +152,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	
 	@Override
 	public void update(Computer computer) {
-		String sqlUpdate = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ?  WHERE id = ?";
+		String sqlUpdate = "UPDATE computer SET :name , :introduced, :discontinued, :company_id  WHERE id = :id ";
 
 		try {
-
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
 			parameters.addValue("name", computer.getName());
 			parameters.addValue("introduced", DateMapper.localDateTosqlDate(computer.getIntroduced()));
@@ -166,7 +168,6 @@ public class ComputerDaoImpl implements ComputerDao {
 			logger.error("Error when Update ");
 			e.printStackTrace();
 		}
-
 	}
 
 	
@@ -174,12 +175,16 @@ public class ComputerDaoImpl implements ComputerDao {
 	public List<Computer> getByName(String search) {
 
 		List<Computer> computersSelection = new ArrayList<Computer>();
-		String sqlSearch = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE ? ";
-
+		
+		String sqlSearch = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE :search ";
+		
+		
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(daoConnexion.getDS());
-
-			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("name", search);
+		
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		
+		parameters.addValue("search", search);
+		
 			
 			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
 
@@ -187,7 +192,7 @@ public class ComputerDaoImpl implements ComputerDao {
 				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 				
 					ComputerDTO computerDTO = new ComputerDTO.Builder().setId(rs.getString("id")).setName(rs.getString("name"))
-							.setIntroduced(rs.getString("introdiuced")).setDiscontinued(rs.getString("discontinued"))
+							.setIntroduced(rs.getString("introduced")).setDiscontinued(rs.getString("discontinued"))
 							.setCompanyId(rs.getString("company_id"))
 							.build();
 					
@@ -195,73 +200,79 @@ public class ComputerDaoImpl implements ComputerDao {
 					
 					return computer;
 				}
-				
-		
 		};
 		
 		computersSelection = jdbcTemplate.query(sqlSearch, parameters, rowMapper);
 		
 		return computersSelection;
 	}
-
 	
 	
-	
-	
-		
 	public List<Computer> getByCompany(int company_id) {
 
 		List<Computer> computersSelection = new ArrayList<Computer>();
+		
+		String sqlSearch = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = :companyId ";
+		
+		
+		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(daoConnexion.getDS());
+		
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		
+		parameters.addValue("companyId", company_id);
+		
+			
+			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
 
-		Connection connexion = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultat = null;
-
-		try {
-			connexion = daoConnexion.getConnexion();
-			preparedStatement = connexion.prepareStatement(
-					"SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = ? ");
-			preparedStatement.setInt(1, company_id);
-			resultat = preparedStatement.executeQuery();
-
-			while (resultat.next()) {
-				Computer computer = ComputerMapper.getComputer(resultat);
-				computersSelection.add(computer);
-			}
-
-		} catch (SQLException e) {
-			logger.error("error in get by name SQL");
-			e.printStackTrace();
-		}
+				@Override
+				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+					ComputerDTO computerDTO = new ComputerDTO.Builder().setId(rs.getString("id")).setName(rs.getString("name"))
+							.setIntroduced(rs.getString("introduced")).setDiscontinued(rs.getString("discontinued"))
+							.setCompanyId(rs.getString("company_id"))
+							.build();
+					
+					Computer computer = ComputerMapperDTO.dtoToComputer(computerDTO);
+					
+					return computer;
+				}
+		};
+		
+		computersSelection = jdbcTemplate.query(sqlSearch, parameters, rowMapper);
+		
 		return computersSelection;
 	}
 	
-	
-	
+
 	
 	public List<Computer> orderByComputer() {
 		List<Computer> computers = new ArrayList<Computer>();
-		Connection connexion = null;
-		Statement statement = null;
-		ResultSet resultat = null;
 
-		try {
-			connexion = daoConnexion.getConnexion();
-			statement = connexion.createStatement();
-			resultat = statement
-					.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;");
+		String sqlOrderAsc = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;";
+	
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(daoConnexion.getDS());
+			
+			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
 
-			while (resultat.next()) {
-				Computer computer = ComputerMapper.getComputer(resultat);
+				@Override
+				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				
+					Computer computer = new Computer.Builder().setIdComputer(rs.getInt("id")).setName(rs.getString("name"))
+							.setIntroduced(DateMapper.sqlToLocalDate(rs.getDate("introduced")))
+							.setDiscontinued(DateMapper.sqlToLocalDate(rs.getDate("discontinued")))
+							.setCompany_id(rs.getInt("company_id"))
+							.build();
+		
+					return computer;
+				}		
+		};
+		
+		computers= jdbcTemplate.query(sqlOrderAsc,rowMapper);
 
-				computers.add(computer);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		return computers;
-
 	}
+
+	
 
 	@Override
 	public int countComputer() {

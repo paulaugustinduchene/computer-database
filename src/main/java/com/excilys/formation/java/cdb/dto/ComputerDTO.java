@@ -62,11 +62,11 @@ public class ComputerDTO {
 
 	public static class Builder{
 
-		private String id;
-		private String name;
-		private String introduced;
-		private String discontinued;
-		private String companyId;
+		private String id = null;
+		private String name = null;
+		private String introduced = null ;
+		private String discontinued = null;
+		private String companyId = null;
 
 		public Builder setId(String id) {
 			this.id = id;
