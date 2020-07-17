@@ -70,7 +70,7 @@ public class AddComputerServlet extends HttpServlet {
 		request.setAttribute("ListCompanies", companies);
 		
 		
-		this.getServletContext().getRequestDispatcher("/views/addcomputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addcomputer.jsp").forward(request, response);
 	}
 
 	/**

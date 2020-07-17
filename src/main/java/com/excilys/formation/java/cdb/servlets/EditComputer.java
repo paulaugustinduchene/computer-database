@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class EditComputer extends HttpServlet {
 		request.getParameter("id");
 		request.setAttribute("id", request.getParameter("id"));
 
-		this.getServletContext().getRequestDispatcher("/views/editComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/views/editComputer.jsp").forward(request, response);
 
 	}
 
@@ -79,8 +80,10 @@ public class EditComputer extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		
 		String id = request.getParameter("id");
-
+		
+		@Valid
 		String name = request.getParameter("computerName");
 
 		String introduced = null;
