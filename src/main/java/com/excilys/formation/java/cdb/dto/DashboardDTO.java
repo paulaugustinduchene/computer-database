@@ -9,6 +9,7 @@ public class DashboardDTO {
 	private String maxpage;
 	private String List;
 	private String orderAsc;
+	private String listCompanies;
 
 	
 	
@@ -53,8 +54,12 @@ public class DashboardDTO {
 	}
 	public void setList(String list) {
 		List = list;
-	} 
-	
-	
+	}
+	public String getListCompanies() {
+		return listCompanies;
+	}
+	public void setListCompanies(String listCompanies) {
+		this.listCompanies = listCompanies;
+	}
 
 }

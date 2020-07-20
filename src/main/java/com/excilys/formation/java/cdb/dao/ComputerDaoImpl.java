@@ -150,7 +150,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	
 	@Override
 	public void update(Computer computer) {
-		String sqlUpdate = "UPDATE computer SET :name , :introduced, :discontinued, :company_id  WHERE id = :id ";
+		String sqlUpdate = "UPDATE computer SET name = :name , introduced = :introduced, discontinued = :discontinued, company_id = :company_id  WHERE id = :id ";
 
 		try {
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
