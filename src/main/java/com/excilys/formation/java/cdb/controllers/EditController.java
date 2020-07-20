@@ -58,8 +58,11 @@ public class EditController {
 			
 		String id = computerDTO.getId();
 		
-		@Valid
-		String name = computerDTO.getName();
+		String name = null; 
+		
+		if(computerDTO.getName() != "") {
+			name = computerDTO.getName();
+			}
 
 		String introduced = null;
 		String discontinued = null;
@@ -78,13 +81,11 @@ public class EditController {
 		logger.info("id : " + id + " name : " + name + " " + company_id);
 
 		ComputerDTO computer = new ComputerDTO(name, introduced, discontinued, company_id);
-		computerDTO.setId(id);
+		computer.setId(id);
 		
-		System.out.println(computerDTO.getId()+ " " + computerDTO.getName());
-		
-		if (computerDTO.getName() != "") {
+		if (computer.getName() != "" && computer.getName() != null ) {
 			computerServices.update(ComputerMapperDTO.dtoToComputer(computer));
-			logger.info("computer updated");
+			logger.info("computer updated : " + computer.getName());
 		} else {
 			logger.error("name field can't be empty ! ");
 		}

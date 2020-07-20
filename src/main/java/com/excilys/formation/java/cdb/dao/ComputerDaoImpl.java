@@ -137,7 +137,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		try {
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
 			parameters.addValue("id", computer.getId());
-			jdbcTemplate.update(sqlDelete, parameters);
+			namedParameterJdbcTemplate.update(sqlDelete, parameters);
 
 		} catch (DataAccessException e) {
 			logger.error("Error when deleting computer");
@@ -145,8 +145,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		}
 
 	}
-	
-	
+
 	
 	@Override
 	public void update(Computer computer) {
@@ -159,7 +158,10 @@ public class ComputerDaoImpl implements ComputerDao {
 			parameters.addValue("discontinued", DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
 			parameters.addValue("company_id", computer.getCompany_id());
 			parameters.addValue("id", computer.getId());
+			
 			namedParameterJdbcTemplate.update(sqlUpdate, parameters);
+			
+			logger.info("name in Dao Impl: " + computer.getName() );
 
 		} catch (DataAccessException e) {
 			logger.error("Error when Update ");

@@ -43,6 +43,7 @@ public class ComputerServices {
 
 	public void create(Computer computer) {
 		computerDao.add(computer);
+		logger.info("name in Dao Impl: " + computer.getName());
 	}
 
 	public void delete(Computer computer) {
@@ -50,6 +51,9 @@ public class ComputerServices {
 	}
 
 	public void update(Computer computer) {
+		
+		logger.info("name : " + computer.getName());
+		
 		try {
 			computerDao.update(computer);
 			logger.info("update oK");

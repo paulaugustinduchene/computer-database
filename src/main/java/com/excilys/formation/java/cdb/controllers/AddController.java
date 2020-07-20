@@ -2,6 +2,8 @@ package com.excilys.formation.java.cdb.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +51,19 @@ public class AddController {
 		ModelAndView mv = new ModelAndView("redirect:addcomputer");
 		
 		String name = null;
+		
 		if(computerDTO.getName() != "") {
 		name = computerDTO.getName();
-		// request.setAttribute("computerName", name);
 		}
+		
+		logger.info("name in getName: " + computerDTO.getName());
+		logger.info("name in : " + name );
+		
 		
 		String introduced = null;
 		String discontinued = null;
 
+		
 		if (computerDTO.getIntroduced() != "") {
 			introduced = computerDTO.getIntroduced();
 			// request.setAttribute("introduced", introduced);
@@ -66,7 +73,6 @@ public class AddController {
 			discontinued = computerDTO.getDiscontinued();
 			// request.setAttribute("discontinued", discontinued);
 		}
-		
 		
 		String company_id = computerDTO.getCompanyId();
 		// request.setAttribute("companyId", company_id );

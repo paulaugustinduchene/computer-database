@@ -11,6 +11,8 @@ public class ComputerMapper {
 	
 	public static Computer getComputer(ResultSet results) throws SQLException {
 		
+	
+		
 		return new Computer.Builder().setIdComputer(results.getInt("id")).setName(results.getString("name"))
 				.setIntroduced(DateMapper.sqlToLocalDate(results.getDate("introduced"))).
 				setDiscontinued(DateMapper.sqlToLocalDate(results.getDate("discontinued")))

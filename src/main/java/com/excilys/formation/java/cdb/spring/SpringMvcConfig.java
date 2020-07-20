@@ -18,7 +18,7 @@ public class SpringMvcConfig implements WebMvcConfigurer{
 	
 	@Override
 	   public void addViewControllers(ViewControllerRegistry registry) {
-	      registry.addViewController("/").setViewName("listComputer");
+	      registry.addViewController("/").setViewName("dashboard");
 	   }
 	
 	
