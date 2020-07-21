@@ -46,7 +46,7 @@ public class DashboardController {
 		return high = (countperpage * page) - 1;
 	}
 	
-	@GetMapping("/listComputer")
+	@GetMapping({"/listComputer","/"})
 	public ModelAndView controllerDoGet(DashboardDTO dashboardDTO) {
 		
 		ModelAndView mv = new ModelAndView("dashboard");

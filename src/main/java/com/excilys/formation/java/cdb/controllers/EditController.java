@@ -44,6 +44,9 @@ public class EditController {
 		dashboardDTO.getListCompanies();
 		computerDTO.getId();
 		
+		computerDTO.getName();
+		mv.getModel().put("name", computerDTO.getName());
+		
 		mv.getModel().put("ListCompanies", companies);
 		mv.getModel().put("id", computerDTO.getId());
 
@@ -91,7 +94,6 @@ public class EditController {
 		}
 	
 		return mv;
-		
 	}
 
 }

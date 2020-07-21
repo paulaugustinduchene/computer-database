@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <%@ page isELIgnored="false"%>
 <%@ page import="java.text.*"%>
 
@@ -8,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Computer Database</title>
+<title> Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -19,8 +22,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="dashboard.html"> <spring:message code="header.title" /> </a>
 		</div>
 	</header>
 
@@ -48,8 +50,6 @@
 			</div>
 		</div>
 
-
-
 		<form id="deleteForm" action="listComputer" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
@@ -70,7 +70,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a
+						<th> <spring:message code="dashboard.computer.name"/> <a
 							href="/computer-database_maven/listComputer?orderAsc=true">&#9650;</a></th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
