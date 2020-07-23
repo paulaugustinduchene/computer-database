@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.excilys.formation.java.cdb.test.ComputerDaoImplTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.69 s - in com.excilys.formation.java.cdb.test.ComputerDaoImplTest

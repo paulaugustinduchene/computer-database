@@ -15,9 +15,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="resources/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="resources/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -93,7 +93,7 @@
 								href="/computer-database_maven/editcomputer?id=${computer.id}"
 								onclick=""> ${computer.name}</a></td>
 							<td>${computer.introduced}</td>
-							<td>${computer.discontinuted}</td>
+							<td>${computer.discontinued}</td>
 							<td>${computer.company_id}</td>
 						</tr>
 					</c:forEach>
@@ -132,9 +132,9 @@
 		</div>
 	</footer>
 
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="resources/js/jquery.min.js"></script>
+	<script src="resources/js/bootstrap.min.js"></script>
+	<script src="resources/js/dashboard.js"></script>
 
 </body>
 </html>

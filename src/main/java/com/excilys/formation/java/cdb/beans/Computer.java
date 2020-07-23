@@ -2,14 +2,28 @@ package com.excilys.formation.java.cdb.beans;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.excilys.formation.java.cdb.services.CompanyServices;
 
+@Entity
+@Table(name="computer")
 public class Computer {
 	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	@NotNull
-	private int id;
+	private Integer id;
 	
 	@NotNull
 	@Size(max=255)
@@ -17,18 +31,20 @@ public class Computer {
 	
 	private LocalDate introduced;
 	
-	private LocalDate discontinuted;
+	private LocalDate discontinued;
 	
-	private int company_id; 
+
+	private Integer company_id; 
 	
-	private Company company; 
+//	@ManyToOne
+//	private Company company; 
 	
 	
-	public Computer(int id, String name, LocalDate introduced, LocalDate discontinuted, int company_id) {
+	public Computer(Integer id, String name, LocalDate introduced, LocalDate discontinued, Integer company_id) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
-		this.discontinuted = discontinuted;
+		this.discontinued = discontinued;
 		this.company_id = company_id;
 		//this.company = CompanyServices.afficherCompany(company_id);
 	}
@@ -37,10 +53,10 @@ public class Computer {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -55,19 +71,19 @@ public class Computer {
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
-	public LocalDate getDiscontinuted() {
-		return discontinuted;
+	public LocalDate getDiscontinued() {
+		return discontinued;
 	}
-	public void setDiscontinuted(LocalDate localDate) {
-		this.discontinuted = localDate;
+	public void setDiscontinued(LocalDate localDate) {
+		this.discontinued = localDate;
 	}
 	
-	public int getCompany_id() {
+	public Integer getCompany_id() {
 		return company_id;
 		//return company.getId();
 	}
 	
-	public void setCompany_id(int company_id) {
+	public void setCompany_id(Integer company_id) {
 		this.company_id = company_id;
 	}
 	
@@ -90,19 +106,19 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinuted="
-				+ discontinuted + ", company_id=" +  company_id /* company.getName() */ + "]\n";
+				+ discontinued + ", company_id=" +  company_id /* company.getName() */ + "]\n";
 	}
 
 	 public static class Builder {
 		 
-		  	private int idComputer;
+		  	private Integer idComputer;
 	        private String name;
 	        private LocalDate introducedDate;
 	        private LocalDate discontinuedDate;
-	        private int company_id;
+	        private Integer company_id;
 //	        private Company company;
 
-	        public Builder setIdComputer(int idComputer) {
+	        public Builder setIdComputer(Integer idComputer) {
 	            this.idComputer = idComputer;
 	            return this;
 	        }
@@ -123,7 +139,7 @@ public class Computer {
 	        }
 
 	        
-	        public Builder setCompany_id(int company_id) {
+	        public Builder setCompany_id(Integer company_id) {
 	            this.company_id = company_id;
 	            return this;
 	        }
@@ -138,7 +154,7 @@ public class Computer {
 	            computer.id = this.idComputer;
 	            computer.name = this.name;
 	            computer.introduced = this.introducedDate;
-	            computer.discontinuted = this.discontinuedDate;
+	            computer.discontinued = this.discontinuedDate;
 	            computer.company_id = this.company_id;
 //	            computer.company = this.company;
 	            return computer;

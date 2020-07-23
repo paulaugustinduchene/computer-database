@@ -47,7 +47,7 @@ public class ComputerTest {
 		LocalDate disc = LocalDate.of(2020, 1, 8);
 		Computer computer = new Computer(5, "name", intro , disc, 6);
 		LocalDate date = LocalDate.of(2020, 1, 8);
-		assertEquals("", date, computer.getDiscontinuted());
+		assertEquals("", date, computer.getDiscontinued());
 	}
 	
 	

@@ -9,8 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +32,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dto.ComputerDTO;
@@ -29,252 +42,152 @@ import com.excilys.formation.java.cdb.mapper.DateMapper;
 
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
-	
-	
+
 	private static Logger logger = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
-	@Autowired
-	private DaoConnexion daoConnexion;
 
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
 	public ComputerDaoImpl(DaoConnexion daoConnexion) {
 		this.daoConnexion = daoConnexion;
 	}
+
+	
 	
 	@Override
 	public List<Computer> list() {
-		
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		String sqlList = "SELECT id, name, introduced, discontinued, company_id FROM computer ;";
-			
-			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
 
-				@Override
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
 
-					Computer computer = new Computer.Builder().setIdComputer(rs.getInt("id")).setName(rs.getString("name"))
-							.setIntroduced(DateMapper.sqlToLocalDate(rs.getDate("introduced")))
-							.setDiscontinued(DateMapper.sqlToLocalDate(rs.getDate("discontinued")))
-							.setCompany_id(rs.getInt("company_id"))
-							.build();
+		criteriaQuery.select(root);
 
-					return computer;
-				}
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
 
-		};
-		
-		computersSelection = namedParameterJdbcTemplate.query(sqlList,rowMapper);
-		
-		return computersSelection;
+		return computers.getResultList();
 
 	}
 
 	public List<Computer> listpage(int low, int high) {
-		
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		String sqlPage = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id < :high AND id > :low ;";
 
-		MapSqlParameterSource parameters = new MapSqlParameterSource(); 
-		parameters.addValue("high", high);
-		parameters.addValue("low", low);
-			
-			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
 
-				@Override
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-					Computer computer = new Computer.Builder().setIdComputer(rs.getInt("id")).setName(rs.getString("name"))
-							.setIntroduced(DateMapper.sqlToLocalDate(rs.getDate("introduced")))
-							.setDiscontinued(DateMapper.sqlToLocalDate(rs.getDate("discontinued")))
-							.setCompany_id(rs.getInt("company_id"))
-							.build();
-				
-					return computer;
-				}
+		criteriaQuery.select(root);
 
-		};
-		
-		computersSelection = namedParameterJdbcTemplate.query(sqlPage,parameters,rowMapper);
-		
-		return computersSelection;
-		
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
+
+		return computers.getResultList();
+
+
 
 	}
 
+	@Transactional
 	@Override
 	public void add(Computer computer) {
-
-		String sqlAdd = "INSERT INTO computer(name, introduced, discontinued, company_id) VALUES( :name, :introduced , :discontinued , :company_id);";
-
-		try {
-			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("name", computer.getName());
-			parameters.addValue("introduced", DateMapper.localDateTosqlDate(computer.getIntroduced()));
-			parameters.addValue("discontinued", DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
-			parameters.addValue("company_id", computer.getCompany_id());
-			namedParameterJdbcTemplate.update(sqlAdd, parameters);
-
-		} catch (Exception e) {
-			logger.error("error when updating computer");
-			e.printStackTrace();
-		}
+		
+		entityManager.persist(computer);
 
 	}
 
 	
+	@Transactional
 	@Override
 	public void delete(Computer computer) {
 
-		String sqlDelete = "DELETE FROM computer WHERE id = :id ; ";
-
-		try {
-			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("id", computer.getId());
-			namedParameterJdbcTemplate.update(sqlDelete, parameters);
-
-		} catch (DataAccessException e) {
-			logger.error("Error when deleting computer");
-			e.printStackTrace();
-		}
-
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaDelete<Computer> criteriaQuery = cb.createCriteriaDelete(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		
+		criteriaQuery.where(cb.equal(root.get("id"), computer.getId()));
+		entityManager.createQuery(criteriaQuery).executeUpdate();
 	}
 
 	
+	@Transactional
 	@Override
 	public void update(Computer computer) {
-		String sqlUpdate = "UPDATE computer SET name = :name , introduced = :introduced, discontinued = :discontinued, company_id = :company_id  WHERE id = :id ";
+		
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaUpdate<Computer> criteriaQuery = cb.createCriteriaUpdate(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
 
-		try {
-			MapSqlParameterSource parameters = new MapSqlParameterSource();
-			parameters.addValue("name", computer.getName());
-			parameters.addValue("introduced", DateMapper.localDateTosqlDate(computer.getIntroduced()));
-			parameters.addValue("discontinued", DateMapper.localDateTosqlDate(computer.getDiscontinuted()));
-			parameters.addValue("company_id", computer.getCompany_id());
-			parameters.addValue("id", computer.getId());
-			
-			namedParameterJdbcTemplate.update(sqlUpdate, parameters);
-			
-			logger.info("name in Dao Impl: " + computer.getName() );
+		criteriaQuery.set(root.get("name"), computer.getName());
+		
+		criteriaQuery.set(root.get("introduced"), computer.getIntroduced());
+		
+		criteriaQuery.set(root.get("discontinued"), computer.getDiscontinued());
+		
+		criteriaQuery.set(root.get("company_id"), computer.getDiscontinued());
+		
+		criteriaQuery.where(cb.equal(root.get("id"), computer.getId()));
+		
+		this.entityManager.createQuery(criteriaQuery).executeUpdate();
 
-		} catch (DataAccessException e) {
-			logger.error("Error when Update ");
-			e.printStackTrace();
-		}
 	}
 
-	
-	
 	public List<Computer> getByName(String search) {
 
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		String sqlSearch = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE name LIKE :search ";
-		
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		
-		parameters.addValue("search", search);
-		
-			
-			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
 
-				@Override
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-					ComputerDTO computerDTO = new ComputerDTO.Builder().setId(rs.getString("id")).setName(rs.getString("name"))
-							.setIntroduced(rs.getString("introduced")).setDiscontinued(rs.getString("discontinued"))
-							.setCompanyId(rs.getString("company_id"))
-							.build();
-					
-					Computer computer = ComputerMapperDTO.dtoToComputer(computerDTO);
-					
-					return computer;
-				}
-		};
-		
-		computersSelection = namedParameterJdbcTemplate.query(sqlSearch, parameters, rowMapper);
-		
-		return computersSelection;
+		Predicate computerName = cb.like(root.get("name"), search);
+
+		criteriaQuery.select(root).where(cb.or(computerName));
+
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
+
+		return computers.getResultList();
+
 	}
+
+	
 	
 	
 	public List<Computer> getByCompany(int company_id) {
 
-		List<Computer> computersSelection = new ArrayList<Computer>();
-		
-		String sqlSearch = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE company_id = :companyId ";
-				
-		MapSqlParameterSource parameters = new MapSqlParameterSource();
-		
-		parameters.addValue("companyId", company_id);
-		
-			
-			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
 
-				@Override
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-					ComputerDTO computerDTO = new ComputerDTO.Builder().setId(rs.getString("id")).setName(rs.getString("name"))
-							.setIntroduced(rs.getString("introduced")).setDiscontinued(rs.getString("discontinued"))
-							.setCompanyId(rs.getString("company_id"))
-							.build();
-					
-					Computer computer = ComputerMapperDTO.dtoToComputer(computerDTO);
-					
-					return computer;
-				}
-		};
-		
-		computersSelection = namedParameterJdbcTemplate.query(sqlSearch, parameters, rowMapper);
-		
-		return computersSelection;
+		criteriaQuery.select(root).where(root.equals("company_id"),company_id);
+
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
+
+		return computers.getResultList();
 	}
-	
 
-	
 	public List<Computer> orderByComputer() {
-		List<Computer> computers = new ArrayList<Computer>();
 
-		String sqlOrderAsc = "SELECT id, name, introduced, discontinued, company_id FROM computer ORDER BY name;";
-			
-			RowMapper<Computer> rowMapper = new RowMapper<Computer>() {
-
-				@Override
-				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-					Computer computer = new Computer.Builder().setIdComputer(rs.getInt("id")).setName(rs.getString("name"))
-							.setIntroduced(DateMapper.sqlToLocalDate(rs.getDate("introduced")))
-							.setDiscontinued(DateMapper.sqlToLocalDate(rs.getDate("discontinued")))
-							.setCompany_id(rs.getInt("company_id"))
-							.build();
 		
-					return computer;
-				}		
-		};
-		
-		computers= jdbcTemplate.query(sqlOrderAsc,rowMapper);
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		criteriaQuery.orderBy(cb.asc(root.get("name")));
 
-		return computers;
+		TypedQuery <Computer> computers = entityManager.createQuery(criteriaQuery);
+		return computers.getResultList();
+
 	}
 
 	
-
+	
+	
+	@Transactional
 	@Override
 	public int countComputer() {
 
-		String sqlCount = "SELECT count(id) FROM computer ";
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
+		Root<Computer> root = criteriaQuery.from(Computer.class);
+		criteriaQuery.select(cb.count(root));
 
-		int computerNb  = 0; 
+		return entityManager.createQuery(criteriaQuery).getSingleResult().intValue();
 
-		computerNb = jdbcTemplate.queryForObject(sqlCount, Integer.class);
-
-		return computerNb;
 	}
 
 }

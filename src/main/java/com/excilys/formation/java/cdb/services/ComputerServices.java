@@ -19,7 +19,7 @@ import com.excilys.formation.java.cdb.dao.DaoConnexion;
 public class ComputerServices {
 
 	@Autowired
-	private ComputerDaoImpl computerDao;
+	private ComputerDao computerDao;
 	private static Logger logger = LoggerFactory.getLogger(ComputerServices.class);
 
 	public ComputerServices() {
@@ -42,8 +42,9 @@ public class ComputerServices {
 	}
 
 	public void create(Computer computer) {
+		logger.info("name in Dao Impl: " + computer);
 		computerDao.add(computer);
-		logger.info("name in Dao Impl: " + computer.getName());
+	
 	}
 
 	public void delete(Computer computer) {

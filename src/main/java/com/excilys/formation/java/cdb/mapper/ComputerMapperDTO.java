@@ -17,7 +17,8 @@ public class ComputerMapperDTO {
 	}
 	
 	public static Computer dtoToComputer(ComputerDTO computerDto){
-		int id = -1; 
+		
+		Integer id = null;
 		
 		if(computerDto.getId() != null && computerDto.getId() != "" ) {
 			id = (int) Integer.valueOf(computerDto.getId());

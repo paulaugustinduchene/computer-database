@@ -66,18 +66,15 @@ public class AddController {
 		
 		if (computerDTO.getIntroduced() != "") {
 			introduced = computerDTO.getIntroduced();
-			// request.setAttribute("introduced", introduced);
+
 		}
 		
 		if (computerDTO.getDiscontinued() != "") {
 			discontinued = computerDTO.getDiscontinued();
-			// request.setAttribute("discontinued", discontinued);
+
 		}
 		
 		String company_id = computerDTO.getCompanyId();
-		// request.setAttribute("companyId", company_id );
-
-		System.out.println("name" +  name + " " + company_id);
 
 		ComputerDTO computer = new ComputerDTO(name, introduced, discontinued, company_id);
 

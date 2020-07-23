@@ -19,10 +19,13 @@
 		<mysql-connector-java.version>8.0.20</mysql-connector-java.version>
 		<mockito-all.version>1.10.19</mockito-all.version>
 		<slf4j-api.version>1.6.1</slf4j-api.version>
+		<hibernate.version>5.4.18.Final</hibernate.version>
+
 	</properties>
 
-
 	<dependencies>
+
+		<!-- SPRING DEPENDENCIES -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -55,6 +58,12 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- Spring ORM support -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -102,7 +111,6 @@
 			<version>1.2</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
@@ -148,8 +156,7 @@
 			<version>2.0.1.Final</version>
 		</dependency>
 
-
-
+		<!-- Connection -->
 
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -157,11 +164,16 @@
 			<version>3.4.5</version>
 		</dependency>
 
+		<!-- HIBERNATE -->
 
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
 
 	</dependencies>
-
-
 
 	<build>
 		<plugins>

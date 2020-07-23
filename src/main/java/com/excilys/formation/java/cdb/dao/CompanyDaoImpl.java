@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +31,8 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Autowired
 	private DaoConnexion daoConnexion;
 	
-	
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public CompanyDaoImpl(DaoConnexion daoConnexion) {
 		this.daoConnexion = daoConnexion;
@@ -32,33 +40,24 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Override
 	public List<Company> list() {
-		List<Company> companies = new ArrayList<Company>();
-		Connection connexion = null;
-		Statement statement = null;
-		ResultSet resultat = null;
+		
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Company> criteriaQuery = cb.createQuery(Company.class);
+		Root<Company> root = criteriaQuery.from(Company.class);
 
-		try {
-			connexion = daoConnexion.getConnexion();
-			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT id, name FROM company;");
+		criteriaQuery.select(root);
 
-			while (resultat.next()) {
+		TypedQuery<Company> companies = entityManager.createQuery(criteriaQuery);
 
-				Company company = CompanyMapper.getCompany(resultat);
+		return companies.getResultList();
 
-				companies.add(company);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return companies;
 	}
 
 	
 	
 	public void delete(int company_id) {
 
-		
+		//TODO replace with hibernate
 
         try {
         	Connection connexion = daoConnexion.getConnexion();
