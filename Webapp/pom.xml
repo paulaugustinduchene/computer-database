@@ -3,20 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.excilys.formation.java.cdb</groupId>
+		<artifactId>Computer-database_multimodules</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	
 	<groupId>com.excilys.formation.java.cdb</groupId>
-	<artifactId>Computer-database_multimodules</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-
-	<modules>
-		<module>Binding</module>
-		<module>Core</module>
-		<module>Persistance</module>
-		<module>Service</module>
-		<module>Webapp</module>
-		<module>Console</module>
-	</modules>
-
+	<artifactId>Webapp</artifactId>
+	<packaging>war</packaging>
 
 
 	<properties>
@@ -34,6 +30,26 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Binding</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Persistance</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- SPRING DEPENDENCIES -->
 
