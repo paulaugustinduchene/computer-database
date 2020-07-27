@@ -30,20 +30,16 @@ public class DashboardController {
 	private static Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
 	public int pageLength = 10;
-	public int low = 0;
-	public int high = pageLength;
+	public int offset = 0;
+	public int limit= pageLength;
 	public int page = 1;
 	
 	private int maxpage(int computers, int perpage) {
 		return computers / perpage;
 	}
 
-	private int setPageLow(int countperpage) {
-		return low = (countperpage * page) - countperpage;
-	}
-
-	private int setPageHigh(int countperpage) {
-		return high = (countperpage * page) - 1;
+	private int setOffset(int countperpage) {
+		return offset = (countperpage * page) - countperpage;
 	}
 	
 	@GetMapping({"/listComputer","/"})
@@ -52,7 +48,7 @@ public class DashboardController {
 		ModelAndView mv = new ModelAndView("dashboard");
 		
 		List<Computer> computers;
-
+		
 		int computerNb = computerServices.countComputers();
 
 		if (dashboardDTO.getPageLength() != null) {
@@ -65,12 +61,11 @@ public class DashboardController {
 			page = Integer.parseInt(dashboardDTO.getPage());
 		}
 
-		high = pageLength;
-
 		if (dashboardDTO.getSearch() == null || dashboardDTO.getSearch().isEmpty()) {
 
 			if (dashboardDTO.getOrderAsc() == null) {
-				computers = computerServices.afficherPage(setPageLow(pageLength), setPageHigh(pageLength));
+				limit = pageLength; 
+				computers = computerServices.afficherPage(setOffset(pageLength), limit);
 			} else {
 				computers = computerServices.orderByComputer();
 			}
@@ -80,14 +75,16 @@ public class DashboardController {
 			StringBuilder search = new StringBuilder("%");
 			search.append(dashboardDTO.getSearch());
 			search.append("%");
-
 			
 			mv.getModel().put("search", search);
 
 			logger.info("search request is : " + search);
 
-			computers = computerServices.search(search);
+			computers = computerServices.search(search,offset,limit);
+			
 		}
+		
+	
 
 		dashboardDTO.getCount();
 		mv.getModel().put("count", computerNb);

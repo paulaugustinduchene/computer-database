@@ -31,8 +31,8 @@ public class ComputerServices {
 		return computers;
 	}
 
-	public List<Computer> afficherPage(int low, int high) {
-		List<Computer> computers = computerDao.listpage(low, high);
+	public List<Computer> afficherPage(int offset, int limit) {
+		List<Computer> computers = computerDao.listpage(offset, limit);
 		return computers;
 	}
 
@@ -64,10 +64,10 @@ public class ComputerServices {
 	}
 
 	
-	public List<Computer> search(StringBuilder search) {
+	public List<Computer> search(StringBuilder search, int offset, int limit) {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			computers = computerDao.getByName(search.toString());
+			computers = computerDao.getByName(search.toString(),offset, limit);
 		} catch (Exception e) {
 			logger.error("ERROR in computerservices .search()");
 			logger.error(e.getMessage());

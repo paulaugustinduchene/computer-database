@@ -63,20 +63,19 @@ public class ComputerDaoImpl implements ComputerDao {
 		return computers.getResultList();
 
 	}
+	
 
-	public List<Computer> listpage(int low, int high) {
+	public List<Computer> listpage(int offset, int limit) {
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
 		Root<Computer> root = criteriaQuery.from(Computer.class);
-
+		
 		criteriaQuery.select(root);
 
-		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limit);
 
 		return computers.getResultList();
-
-
 
 	}
 
@@ -108,7 +107,7 @@ public class ComputerDaoImpl implements ComputerDao {
 		
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaUpdate<Computer> criteriaQuery = cb.createCriteriaUpdate(Computer.class);
-		Root<Computer> root = criteriaQuery.from(Computer.class);
+		Root<Computer> root  = criteriaQuery.from(Computer.class);
 
 		criteriaQuery.set(root.get("name"), computer.getName());
 		
@@ -124,7 +123,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	}
 
-	public List<Computer> getByName(String search) {
+	public List<Computer> getByName(String search, int offset, int limit) {
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
@@ -134,15 +133,13 @@ public class ComputerDaoImpl implements ComputerDao {
 
 		criteriaQuery.select(root).where(cb.or(computerName));
 
-		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery);
+		TypedQuery<Computer> computers = entityManager.createQuery(criteriaQuery).setFirstResult(offset).setMaxResults(limit);
 
 		return computers.getResultList();
 
 	}
 
-	
-	
-	
+
 	public List<Computer> getByCompany(int company_id) {
 
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -169,9 +166,6 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	}
 
-	
-	
-	
 	@Transactional
 	@Override
 	public int countComputer() {

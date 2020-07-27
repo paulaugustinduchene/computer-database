@@ -105,12 +105,12 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="listComputer?pageLength=${pageLength}&page=${page-1}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="i" begin="${page}" end="${page + 4}">
 					<li><a
-						href="listComputer?pageLength=${pageLength}&page=${page}">
+						href="listComputer?pageLength=${pageLength}&page=${i}">
 							${i} </a></li>
 				</c:forEach>
 				<li><a

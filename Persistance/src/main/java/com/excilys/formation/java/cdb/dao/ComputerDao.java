@@ -15,12 +15,12 @@ public interface ComputerDao {
 
 	public List<Computer> listpage(int low, int high);
 	
-	public List<Computer> getByName(String search);
-	
 	List<Computer> getByCompany(int company_id);
 	
 	public List<Computer> orderByComputer();
 
 	public int countComputer();
+
+	public List<Computer> getByName(String string, int offset, int limit);
 	
 }
