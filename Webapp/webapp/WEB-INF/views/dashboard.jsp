@@ -43,7 +43,7 @@
 
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="/computer-database_maven/addcomputer"> Add Computer </a> <a
+						href="addcomputer"> Add Computer </a> <a
 						class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -71,7 +71,7 @@
 							</a>
 						</span></th>
 						<th> <spring:message code="dashboard.computer.name"/> <a
-							href="/computer-database_maven/listComputer?orderAsc=true">&#9650;</a></th>
+							href="listComputer?orderAsc=true">&#9650;</a></th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
@@ -90,7 +90,7 @@
 								class="cb" value="${computer.id}"></td>
 
 							<td><a
-								href="/computer-database_maven/editcomputer?id=${computer.id}"
+								href="editcomputer?id=${computer.id}"
 								onclick=""> ${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>

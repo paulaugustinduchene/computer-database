@@ -1,5 +1,7 @@
 package com.excilys.formation.java.cdb.beans;
-import java.sql.Date;
+
+
+
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -10,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="computer")

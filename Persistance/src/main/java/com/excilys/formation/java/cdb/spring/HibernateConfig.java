@@ -20,8 +20,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.AbstractContextLoaderInitializer;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -30,9 +28,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.excilys.formation.java.cdb.dao","com.excilys.formation.java.cdb.services","com.excilys.formation.java.cdb.cli"} )
-public class SpringConfig implements WebApplicationInitializer 
-{
+@ComponentScan(basePackages = {"com.excilys.formation.java.cdb.dao"} )
+public class HibernateConfig {
 	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(HikariDataSource dataSource) {
@@ -52,17 +49,6 @@ public class SpringConfig implements WebApplicationInitializer
 		return new HikariDataSource(new HikariConfig("/config.properties"));
 	}
 	
-	 
-
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-		webContext.register(SpringConfig.class,SpringMvcConfig.class);
-		webContext.setServletContext(servletContext);
-		ServletRegistration.Dynamic servlet = servletContext.addServlet("dynamicServlet", new DispatcherServlet(webContext));
-		servlet.setLoadOnStartup(1);
-		servlet.addMapping("/");
-	}
 	
 	@Bean
 	public PlatformTransactionManager txManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
@@ -82,6 +68,7 @@ public class SpringConfig implements WebApplicationInitializer
 	    properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 	    return properties;
 	}
+
 	
 
 }
