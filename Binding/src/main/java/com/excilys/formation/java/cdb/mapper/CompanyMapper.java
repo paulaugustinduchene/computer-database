@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.formation.java.cdb.beans.Company;
-import com.excilys.formation.java.cdb.beans.Computer;
+
 
 public class CompanyMapper {
 

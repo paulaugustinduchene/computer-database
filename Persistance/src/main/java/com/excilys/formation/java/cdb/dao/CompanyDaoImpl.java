@@ -2,11 +2,7 @@ package com.excilys.formation.java.cdb.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.java.cdb.beans.Company;
-import com.excilys.formation.java.cdb.beans.Computer;
-import com.excilys.formation.java.cdb.mapper.CompanyMapper;
-import com.excilys.formation.java.cdb.mapper.ComputerMapper;
-import com.excilys.formation.java.cdb.mapper.DateMapper;
 
 @Repository
 public class CompanyDaoImpl implements CompanyDao {

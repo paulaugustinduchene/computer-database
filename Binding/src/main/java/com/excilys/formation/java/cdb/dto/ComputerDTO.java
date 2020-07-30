@@ -1,6 +1,5 @@
 package com.excilys.formation.java.cdb.dto;
 
-import com.excilys.formation.java.cdb.beans.Computer;
 
 public class ComputerDTO {
 

@@ -1,6 +1,5 @@
 package com.excilys.formation.java.cdb.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class DashboardController {
 		return offset = (countperpage * page) - countperpage;
 	}
 	
-	@GetMapping({"/listComputer","/"})
+	@GetMapping({"/listComputer"})
 	public ModelAndView controllerDoGet(DashboardDTO dashboardDTO) {
 		
 		ModelAndView mv = new ModelAndView("dashboard");

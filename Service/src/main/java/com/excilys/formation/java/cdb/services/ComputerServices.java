@@ -2,7 +2,6 @@ package com.excilys.formation.java.cdb.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dao.ComputerDao;
-import com.excilys.formation.java.cdb.dao.ComputerDaoImpl;
-import com.excilys.formation.java.cdb.dao.DaoConnexion;
+
 
 
 @Service
@@ -20,6 +18,7 @@ public class ComputerServices {
 
 	@Autowired
 	private ComputerDao computerDao;
+	
 	private static Logger logger = LoggerFactory.getLogger(ComputerServices.class);
 
 	public ComputerServices() {

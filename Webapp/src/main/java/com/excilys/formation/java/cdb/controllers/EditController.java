@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.formation.java.cdb.beans.Company;
-import com.excilys.formation.java.cdb.beans.Computer;
 import com.excilys.formation.java.cdb.dto.ComputerDTO;
 import com.excilys.formation.java.cdb.dto.DashboardDTO;
 import com.excilys.formation.java.cdb.mapper.ComputerMapperDTO;

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.formation.java.cdb.beans.Company;
 import com.excilys.formation.java.cdb.dao.CompanyDao;
-import com.excilys.formation.java.cdb.dao.CompanyDaoImpl;
-import com.excilys.formation.java.cdb.dao.ComputerDaoImpl;
-import com.excilys.formation.java.cdb.dao.DaoConnexion;
+
 
 @Service
 public class CompanyServices {
