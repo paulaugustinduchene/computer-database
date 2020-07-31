@@ -18,8 +18,7 @@ import com.excilys.formation.java.cdb.beans.User;
 public class UserDao {
 	
 	@PersistenceContext
-	private EntityManager entityManager;
-	
+	private EntityManager entityManager;	
 	
 	public User getUsernameByUsername(String username) {
 
@@ -27,7 +26,9 @@ public class UserDao {
 		CriteriaQuery<User> criteriaQuery = cb.createQuery(User.class);
 		Root<User> root = criteriaQuery.from(User.class);
 
-		return criteriaQuery.select(root).where();
+	//	return criteriaQuery.select(root).where();
+		
+		return null; 
 
 	}
 

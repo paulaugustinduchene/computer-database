@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	private DaoConnexion daoConnexion;
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsServiceBean() {
     	JdbcUserDetailsManager jdbcUserDM = new JdbcUserDetailsManager(daoConnexion.getDS());
     	//jdbcUserDM.createUser(User.withUsername("user1").password(passwordEncoder().encode("user1234")).disabled(false).authorities("USER").build());
         return jdbcUserDM; 
@@ -44,12 +45,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return authProvider;
 	}
 	
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.authenticationProvider(authentificationProvider());
     }
-    
-    
+
   
     protected void configure(HttpSecurity http) throws Exception {
 	    http.authorizeRequests()
@@ -66,11 +67,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.passwordParameter("password")
 		.defaultSuccessUrl("/listComputer")	
 		.and()
-		.logout()
+		.logout().permitAll()
 		.logoutUrl("/logout")
 		.logoutSuccessUrl("/auth")	
 		.and().exceptionHandling()
-		.accessDeniedPage("/500.html")
+		.accessDeniedPage("/403")
 		.and().csrf().disable();
 	}
 	
